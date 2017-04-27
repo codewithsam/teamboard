@@ -1,0 +1,21 @@
+.dashboard-page {
+    .wrapper{
+        padding: 30px 20px;
+        margin-top: -20px;
+        background-color: #f7f7f7;
+        min-height: 800px;
+    }
+    .brand-img {
+        padding: 5px !important;
+        img {
+            width: 40px;
+            height: 40px;
+        }
+    }
+    .create-board-btn {
+        width: 100%;
+        height: auto;
+        padding: 15px 15px 30px 15px;
+        text-align: center;
+    }
+}

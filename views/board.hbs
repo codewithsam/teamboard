@@ -1,0 +1,199 @@
+<nav class="navbar navbar-default board-header" style="z-index: 10">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+            <a class="navbar-brand brand-icon" href="#"><img src="/img/favicon.ico" alt=""></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown board-settings-options">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Board Name <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="share-board-button"><button class="share-board btn btn-primary" data-toggle="modal" data-target="#shareModal"><i class="fa fa-user-plus"></i>Share</button></li>
+                <li class="dropdown profile-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="/img/alphabet/Letter-{{charAtIndex user.name 0}}-icon.png" alt="">{{user.name}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+<div class="sidebar" style="z-index: 10">
+    <ul>
+        <li class="command-buttons">
+            <div class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-plus"></i>
+            </div>
+            <ul class="dropdown-menu menu-right additional-features">
+                <li class="ui-btn-upload"><i class="flaticon-up-arrow"></i><span>Upload</span></li>
+                <li class="ui-btn-from-url"><i class="flaticon-link"></i><span>From URL</span></li>
+                <li class="ui-btn-capture" class="img-based"><img src="/img/camera.png" alt=""><span>Capture Webpage</span></li>
+                <li class="ui-btn-dropbox" class="img-based"><img src="/img/dropbox.png" alt=""><span>Link Dropbox</span></li>
+                <li class="ui-btn-gdrive" class="img-based"><img src="/img/drive.png" alt=""><span>Link Google Drive</span></li>
+            </ul>
+        </li>
+        <li class="li-divider">
+        </li>
+        <li class="command-buttons ui-btn-pointer">
+            <div><i class="fa fa-mouse-pointer"></i></div>
+        </li>
+        <li class="command-buttons ui-btn-text">
+            <div><i class="fa fa-text-width"></i></div>
+        </li>
+        <li class="command-buttons ui-btn-notes">
+            <div><i class="fa fa-sticky-note"></i></div>
+        </li>
+        <li class="command-buttons">
+            <div class="dropdown-toggle" data-toggle="dropdown"><i class="flaticon-square-3 shapes-icon"></i></div>
+            <ul class="dropdown-menu menu-right shapes-feature">
+                <li class="ui-btn-square"><i class="flaticon-square-1"></i></li>
+                <li class="ui-btn-rounded-square"><i class="flaticon-square-2"></i></li>
+                <li class="ui-btn-parallelogram"><i class="flaticon-square-4"></i></li>
+                <li class="ui-btn-rectangle"><i class="flaticon-rectangular-shape-outline"></i></li>
+                <li class="ui-btn-hexagon"><i class="flaticon-hexagon"></i></li>
+                <li class="ui-btn-triangle"><i class="flaticon-bleach"></i></li>
+                <li class="ui-btn-circle"><i class="flaticon-circle"></i></li>
+                <li class="ui-btn-arrow"><i class="flaticon-arrows"></i></li>
+                <li class="ui-btn-bubble"><i class="flaticon-message-speech-bubble-outline-of-rectangular-shape"></i></li>
+                <li class="ui-btn-star"><i class="flaticon-nature"></i></li>
+                <li class="ui-btn-diamond"><i class="flaticon-poker"></i></li>
+            </ul>
+        </li>
+        <li class="command-buttons">
+            <div class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-arrows-v"></i></div>
+            <ul class="dropdown-menu menu-right shapes-feature">
+                <li class="ui-btn-connector-up"><i class="flaticon-upload"></i></li>
+                <li class="ui-btn-connector-down"><i class="flaticon-download"></i></li>
+                <li class="ui-btn-connector-right"><i class="flaticon-next"></i></li>
+                <li class="ui-btn-connector-left"><i class="flaticon-back"></i></li>
+                <li class="ui-btn-connector-north-east"><i class="flaticon-arrows-7"></i></li>
+                <li class="ui-btn-connector-north-west"><i class="flaticon-arrows-5"></i></li>
+                <li class="ui-btn-connector-south-east"><i class="flaticon-arrows-6"></i></li>
+                <li class="ui-btn-connector-south-west"><i class="flaticon-arrows-4"></i></li>
+            </ul>
+        </li>
+        <li class="command-buttons">
+            <div class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-pencil"></i></div>
+            <ul class="dropdown-menu menu-right shapes-feature">
+                <li><i class="fa fa-pencil"></i></li>
+                <li><i class="fa fa-paint-brush"></i></li>
+                <input class="range-slider__range" type="range" value="100" min="0" max="500">
+                <li class="color-box-set">
+                    <div class="circle-color red"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color pink"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color green"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color blue"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color white"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color orange"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color pink"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color black"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color blue"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color white"></div>
+                </li>
+                <li class="color-box-set">
+                    <div class="circle-color white add"><span>+</span></div>
+                </li>
+            </ul>
+        </li>
+        <li class="command-buttons ui-btn-comment">
+            <div><i class="fa fa-comment-o"></i></div>
+        </li>
+        <li class="command-buttons ui-btn-undo">
+            <div><i class="fa fa-undo"></i></div>
+        </li>
+        <li class="command-buttons ui-btn-expand">
+            <div><i class="fa fa-expand"></i></div>
+        </li>
+        <li class="command-buttons ui-btn-hand">
+            <div><i class="fa fa-hand-paper-o"></i></div>
+        </li>
+    </ul>
+</div>
+<canvas id="canvas" width="1500" height="1500"></canvas>
+
+
+
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content member-add-share-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Enter New Team Member</h4>
+            </div>
+            <div class="modal-body">
+                <input type="search" data-boardid="{{boardid}}" class="form-control mememail" name="mememail" placeholder="Enter Email Of Team Member">
+                <div class="added-members">
+                    {{!--<span class="badge member-email">Sanyam Singh (sam@gmail.com) <i class="fa fa-times-circle"></i></span>--}}
+                </div>
+                <div>
+
+                    <button data-boardid="{{boardid}}" class="btn btn-default pull-right sendTeamNames">Save</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+    (function () {
+        $(document).ready(function () {
+            $('html, body').css({
+                overflow: 'hidden',
+                height: '100%'
+            });
+        });
+    })();
+
+</script>
+
+<script src="/dist/bower_components/fabric.js/dist/fabric.js"></script>
+<script src="/dist/js/_partials.bundle.js"></script>
+<script src="/dist/js/app.bundle.js"></script>

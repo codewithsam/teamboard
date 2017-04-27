@@ -1,0 +1,70 @@
+{{!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/dist/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/dist/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/dist/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/dist/css/app.bundle.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+    </style>
+    <title>Login</title>
+</head>
+
+<body>--}}
+    <div class="loginpage cf">
+        <div class="login-body cf">
+            {{#if errors}} {{#each errors}}
+            <div class="alert alert-danger">{{msg}}</div>
+            {{/each}} {{/if}} {{#if success_msg}}
+            <div class="alert alert-success">{{success_msg}}</div>
+            {{/if}} {{#if error_msg}}
+            <div class="alert alert-danger">{{error_msg}}</div>
+            {{/if}} {{#if error}}
+            <div class="alert alert-success">{{error}}</div>
+            {{/if}}
+            <article class="container-login center-block cf">
+                <section>
+
+                    <div class="tabs-login col-lg-12 col-md-12 col-sm-12 cols-xs-12">
+                        <div role="tabpanel" id="signup" class="tab-pane fade in">
+                            <h2><i class="glyphicon glyphicon-log-in"></i> Sign Up</h2>
+                            <form method="post" accept-charset="utf-8" autocomplete="off" role="form" class="form-horizontal">
+                                <div class="form-group ">
+                                    <label for="login" class="sr-only">Full Name</label>
+                                    <input type="text" class="form-control" name="fullname" id="login_value" placeholder="Full Name" tabindex="1" value="" />
+                                </div>
+                                <div class="form-group ">
+                                    <label for="oldpassword" class="sr-only">Email</label>
+                                    <input type="email" class="form-control" name="email" id="oldpassword" placeholder="Email" value="" tabindex="2" />
+                                </div>
+                                <div class="form-group ">
+                                    <label for="newpassword" class="sr-only">Password</label>
+                                    <input type="password" class="form-control" name="pass" id="newpassword" placeholder="Password" value="" tabindex="2" />
+                                </div>
+                                <br/>
+                                <div class="form-group ">
+                                    <button type="submit" name="formtype" value="websignup" id="submit" tabindex="5" class="btn btn-lg btn-primary">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </div>
+    <style>
+        body,html{
+            height: 100%;
+        }
+    </style>
+{{!--</body>
+
+</html>--}}
