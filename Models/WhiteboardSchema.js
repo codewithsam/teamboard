@@ -27,11 +27,11 @@ module.exports = Whiteboard;
 
 module.exports.createBoard = function(board,cb){
     board.save(cb);
-}
+};
 
 module.exports.getByIdWithOptions = function(id,opt,cb){
     Whiteboard.findById(id,opt, cb);
-}
+};
 module.exports.getByIdAndPopulate = function(id,opt,cb){
     Whiteboard.findById(id).populate('team').exec(function(err,player){
         cb(err,player);
