@@ -190,6 +190,7 @@
                    originX: 'center',
                    originY: 'center',
                    fill: 'white',
+                   strokeWidth: 2,
                    stroke: '#000'
                }, function (err, object) {
                    console.log('triangle added');

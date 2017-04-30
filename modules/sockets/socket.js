@@ -29,8 +29,16 @@ module.exports = function (io) {
             }
         });
         socket.on('object:added', function (msg) {
-            console.log(msg.m);
+            console.log(msg);
             socket.broadcast.to(boardid).emit('object:added', msg);
+        });
+        socket.on('object:modified', function (msg) {
+            console.log(msg);
+            socket.broadcast.to(boardid).emit('object:modified', msg);
+        });
+        socket.on('object:removed', function (msg) {
+            console.log(msg);
+            socket.broadcast.to(boardid).emit('object:removed', msg);
         });
     });
 };

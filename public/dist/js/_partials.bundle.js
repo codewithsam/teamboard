@@ -68,7 +68,7 @@
 /************************************************************************/
 /******/ ({
 
-/***/ 12:
+/***/ 13:
 /***/ (function(module, exports) {
 
 var events = [];
@@ -110,18 +110,18 @@ module.exports = {
 
 /***/ }),
 
-/***/ 27:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(65);
 __webpack_require__(66);
+__webpack_require__(67);
 
 /***/ }),
 
-/***/ 65:
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
-var events = __webpack_require__(12);
+var events = __webpack_require__(13);
 /* Share feature of whiteboard
 // This code blocks is used to add new members to board by sharing board (by entering emails of users you want to add).
 // It sends an ajax post request to /board/:boardid and the server will send a response which will tell if the entered email exists or not
@@ -192,7 +192,7 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ 66:
+/***/ 67:
 /***/ (function(module, exports) {
 
 /**
@@ -227,7 +227,7 @@ $(document).ready(function () {
 /***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(27);
+module.exports = __webpack_require__(29);
 
 
 /***/ })

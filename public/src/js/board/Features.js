@@ -23,36 +23,14 @@ module.exports.initialize = function (c) {
         if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
         if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
 
-        // SCALE_FACTOR = canvas.getZoom();
-
-        // var canvasScale = canvasScale * 1/ SCALE_FACTOR;
-        // var scaleX = o.scaleX;
-        // var scaleY = o.scaleY;
-        // var left = o.left;
-        // var top  = o.top;
-
-        // var tempScaleX = scaleX * SCALE_FACTOR;
-        // var tempScaleY = scaleY * SCALE_FACTOR;
-        // var tempLeft = left * SCALE_FACTOR;
-        // var tempTop = top * SCALE_FACTOR;
-
-        // o.scaleX = tempScaleX;
-        // o.scaleY = tempScaleY;
-        // o.left = tempLeft;
-        // o.top = tempTop;
-        // o.setCoords();
-
-        // canvas.renderAll();
-
         console.log("Fired event 'set:scale', setting scale");
-    });
-
-    canvas.on('object:serialize', function (o) {
-        o._id = util.guid();
-        o.remote = false;
     });
 };
 
+function addBaseProperties(o){
+    o._id = util.guid();
+    o.remote = false;
+}
 
 
 function regularPolygonPoints(sideCount, radius) {
@@ -107,7 +85,7 @@ module.exports.createText = function (o, cb) {
     var options = o || {};
     var obj = new fabric.IText('Edit me...', options);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };
 
@@ -115,7 +93,7 @@ module.exports.createCircle = function (o, cb) {
     var options = o || {};
     var obj = new fabric.Circle(options);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };
 
@@ -123,7 +101,7 @@ module.exports.createRect = function (o, cb) {
     var options = o || {};
     var obj = new fabric.Rect(options);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };
 
@@ -131,7 +109,7 @@ module.exports.createTriangle = function (o, cb) {
     var options = o || {};
     var obj = new fabric.Triangle(options);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };
 
@@ -139,7 +117,7 @@ module.exports.createStar = function (o, cb) {
     var options = o || {};
     var obj = new fabric.Polygon(starPolygonPoints(5, 50, 25), options, false);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };
 
@@ -147,6 +125,6 @@ module.exports.createHexagon = function (o, cb) {
     var options = o || {};
     var obj = new fabric.Polygon(regularPolygonPoints(6, 50), options, false);
     canvas.trigger('set:scale', obj);
-    canvas.trigger('object:serialize', obj);
+    addBaseProperties(obj);
     cb(null, obj);
 };

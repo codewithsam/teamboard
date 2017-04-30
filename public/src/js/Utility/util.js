@@ -9,3 +9,14 @@ function guid() {
 }
 
 module.exports.guid = guid;
+module.exports.getObjectById = function (c, id) {
+    var object = null;
+    var objects = c.getObjects();
+    for (var i = 0, len = c.size(); i < len; i++) {
+        if (objects[i]._id && objects[i]._id === id) {
+            object = objects[i]
+            break;
+        }
+    }
+    return object;
+}
