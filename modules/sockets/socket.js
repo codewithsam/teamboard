@@ -30,10 +30,27 @@ module.exports = function (io) {
         });
         socket.on('object:added', function (msg) {
             console.log(msg);
+            var message = {
+                id: msg._id,
+                data: msg,
+                by: socket.request.user._id
+            };
+            BoardModel.addNewDataFromSocket(boardid, message, function(err, result){
+                console.log(result);
+            });
             socket.broadcast.to(boardid).emit('object:added', msg);
         });
         socket.on('object:modified', function (msg) {
-            console.log(msg);
+            var message = {
+                id: msg._id,
+                data: msg,
+                by: socket.request.user._id
+            };
+            BoardModel.modifyDataFromSocket(boardid,message, function(err, result){
+                if(err) throw err;
+                console.log(result);
+            });
+
             socket.broadcast.to(boardid).emit('object:modified', msg);
         });
         socket.on('object:removed', function (msg) {
