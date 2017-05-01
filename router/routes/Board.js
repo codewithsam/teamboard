@@ -36,7 +36,7 @@ boardRouter.get('/:id', middlewares.isAuth, function (req, res) {
 
     if (req.app.get('env') === 'development') {
         if (req.isAuthenticated()) {
-            BoardSchema.getByIdAndPopulate(req.params.id, {}, function (err, response) {
+            BoardSchema.getByIdAndPopulate(req.params.id, ['team',['data']], function (err, response) {
                 if (err) throw err;
                 return res.render('board', {
                     boardid: req.params.id,

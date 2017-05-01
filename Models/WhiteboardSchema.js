@@ -34,12 +34,16 @@ module.exports.createBoard = function (board, cb) {
     board.save(cb);
 };
 
+module.exports.getById = function(id,cb){
+    Whiteboard.findById(id,cb);
+}
+
 module.exports.getByIdWithOptions = function (id, opt, cb) {
     Whiteboard.findById(id, opt, cb);
 };
 module.exports.getByIdAndPopulate = function (id, opt, cb) {
-    Whiteboard.findById(id).populate('team').exec(function (err, player) {
-        cb(err, player);
+    Whiteboard.findById(id).populate(opt[0]).populate(opt[1]).lean().exec(function (err, player) {
+        cb(err, JSON.stringify(player));
     });
 };
 module.exports.addNewTeamMemberByUserId = function (boardid, userid, cb) {
