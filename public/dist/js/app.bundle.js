@@ -9627,6 +9627,13 @@ module.exports.modifyObjectInState = function (o) {
         }
     }
     console.log(state);
+    var tempstate = [];
+    for(var c = 0;c<initialState.length;c++){
+        if (initialState[c]._id === oj._id) {
+            tempstate.push(initialState[c]);
+        }
+    }
+    console.log(tempstate);
 };
 module.exports.removeObjectInState = function (o) {
     state.push({
@@ -9637,31 +9644,22 @@ module.exports.removeObjectInState = function (o) {
 };
 
 module.exports.undo = function () {
-    var poppedObject = state.pop();
-    if (state.length > 0) {
-        console.log('what?');
-        var oj = JSON.parse(poppedObject.object);
-        if(state.action == 'modify'){
+    var poppedObject = state[state.length-1];
+    if(poppedObject){
+        var oj = JSON.parse(poppedObject.object);        
+        if(poppedObject.action == 'modify'){
             for(var i=initialState.length-1;i>=0;i--){
                 if(initialState[i]._id === oj._id){
-                    initialState.slice(i,1);
+                    initialState.splice(i,1);
                     initialState.push(oj);
                 }
             }
         }
-        return poppedObject;
-    }else if(state.length === 0){
-        if(!poppedObject){ return null; }
-        // console.log('what?');
-        // var oj = JSON.parse(poppedObject.object);
-        // if(state.action == 'modify'){
-        //     for(var i=0;i<initialState.length;i++){
-        //         if(initialState[i]._id === oj._id){
-        //             initialState[i] = oj;
-        //         }
-        //     }
-        // }
-        return poppedObject;
+    }
+    if (state.length > 0) {
+        return state.pop();
+    }else{
+        return null;
     }
 }
 
