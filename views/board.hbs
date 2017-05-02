@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="dropdown board-settings-options">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Board Name <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentBoardData teams "title" }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
@@ -143,9 +143,6 @@
         <li class="command-buttons ui-btn-comment">
             <div><i class="fa fa-comment-o"></i></div>
         </li>
-        <li class="command-buttons ui-btn-undo">
-            <div><i class="fa fa-undo"></i></div>
-        </li>
         <li class="command-buttons ui-btn-expand">
             <div><i class="fa fa-expand"></i></div>
         </li>
@@ -153,6 +150,17 @@
             <div><i class="fa fa-hand-paper-o"></i></div>
         </li>
     </ul>
+</div>
+<div class="footer-extra-commands">
+            <ul>
+                <li class="ui_extra_undo">
+                    <div><i class="fa fa-undo"></i></div>
+                </li><li class="ui_extra_redo">
+                    <div><i class="fa fa-repeat"></i></div>
+                </li><li class="ui_extra_delete">
+                    <div><i class="fa fa-trash-o"></i></div>
+                </li>
+            </ul>
 </div>
 <canvas id="canvas" width="800" height="800"></canvas>
 

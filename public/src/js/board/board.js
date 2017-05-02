@@ -19,7 +19,7 @@ function Board() {
             // console.log(window._globalBoardData.data);
             var ObjectDataList = window._globalBoardData.data;
             for (var i = 0; i < ObjectDataList.length; i++) {
-                sessionStorage.setItem(ObjectDataList[i]._id, JSON.stringify(ObjectDataList[i].data));
+                sessionStorage.setItem(ObjectDataList[i].guid, JSON.stringify(ObjectDataList[i].data));
                 objectList.push(ObjectDataList[i].data);
             }
         } else {

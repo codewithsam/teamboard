@@ -86,3 +86,10 @@ module.exports.modifyDataFromSocket = function (boardid, msg, cb) {
     }
     Whiteboard.update({'data.guid': msg.id},{$set: {'data.$.data': msg.data } }, cb);
 };
+module.exports.deleteDataFromSocket = function (boardid, id, cb) {
+    if (!id) {
+        return;
+    }
+    console.log(id);
+    Whiteboard.update({'data.guid': id},{$pull: {'data':  {'guid': id} } }, cb);
+};

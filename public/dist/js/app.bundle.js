@@ -9028,6 +9028,7 @@ module.exports.createHexagon = function (o, cb) {
 var fabricSettings = __webpack_require__(12);
 var socket = __webpack_require__(27).getInstance();
 var util = __webpack_require__(11);
+var UndoRedo = __webpack_require__(71);
 
 module.exports = function () {
     var canvas = fabricSettings.getCanvas();
@@ -9040,6 +9041,7 @@ module.exports = function () {
             console.log("not again");
             return;
         }
+        UndoRedo.addObjectInState(JSON.stringify(fabricObject));
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log('object:added');
         socket.emit('object:added', fabricObject);
@@ -9057,15 +9059,19 @@ module.exports = function () {
     });
 
     canvas.on('object:modified', function (e) {
+        console.log(e);
         var fabricObject = e.target;
+        console.log(e.target);
         sessionStorage.removeItem(fabricObject._id);
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log("Object changed");
+        UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
 
     });
 
     socket.on('object:modified', function (rawObject) {
+        console.log(rawObject);
         var fabricObject = util.getObjectById(canvas, rawObject._id);
         if (fabricObject) {
             console.log("modified");
@@ -9081,16 +9087,20 @@ module.exports = function () {
     canvas.on('object:removed', function (e) {
         console.log("removed");
         var ObjectId = e.target._id;
+        console.log(ObjectId);
         sessionStorage.removeItem(ObjectId);
+        sessionStorage.getItem(ObjectId);
+        UndoRedo.removeObjectInState(e.target);
+
         socket.emit('object:removed', ObjectId);
     });
     socket.on('object:removed', function (id) {
-        console.log('socket object removed')
+        console.log('socket object removed');
         console.log(id);
         var fabricObject = util.getObjectById(canvas, id);
         if (fabricObject) {
             canvas.remove(fabricObject);
-            sessionStorage.removeItem(fabricObject._id);
+            sessionStorage.removeItem(id);
             canvas.renderAll();
         } else {
             console.warn('No object found: ', id);
@@ -9104,9 +9114,12 @@ module.exports = function () {
 
    var fabricSettings = __webpack_require__(12);
    var features = __webpack_require__(61);
+   var undoRedo = __webpack_require__(71);
+
    module.exports = function () {
        var canvas = fabricSettings.getCanvas();
        features.initialize(canvas);
+       undoRedo.initialize(canvas);
        // Extra Features
        var ui_upload = $('.ui-btn-upload');
        var ui_uploadfromURL = $('.ui-btn-from-url');
@@ -9151,14 +9164,18 @@ module.exports = function () {
        // Comment on object
        var ui_comment = $('.ui-btn-comment');
 
-       //undo-redo
-       var ui_undo = $('.ui-btn-undo');
 
        //canvas pan zoom
        var ui_expand = $('.ui-btn-expand');
 
        //hand tool for moving canvas
        var ui_hand = $('.ui-btn-hand');
+
+       //some extra buttons
+
+       var ui_undo = $('.ui_extra_undo');
+       var ui_redo = $('.ui_extra_redo');
+       var ui_delete = $('.ui_extra_delete');
 
 
 
@@ -9410,24 +9427,71 @@ module.exports = function () {
 
 
 
+       /**
+        * These are some extra features like undo redo and delete
+        */
 
-
-
-
-/**
- * Zoom In and Zoom Out function. This is yet to be created. The below code is just a POC.
- * Do not use this until we create a collaboration system.
- */
-
-       ui_undo.click(function (e) {
-           canvas.setZoom(canvas.getZoom() / fabricSettings.getScale());
-           canvas.renderAll();
+       ui_undo.on('click', function (evt) {
+           var fabricObjects, i;
+           var poppedObject = undoRedo.undo();
+           if(!poppedObject){
+               console.log('Nothing more to undo!');
+               return;
+           }
+           if(poppedObject.action === 'add'){
+               poppedObject = JSON.parse(poppedObject.object);
+               fabricObjects = canvas.getObjects();
+               for(i=0;i<fabricObjects.length;i++){
+                   if(fabricObjects[i]._id === poppedObject._id){
+                       canvas.remove(fabricObjects[i]);
+                       break;
+                   }
+               }
+           }
+           if(poppedObject.action === 'modify'){
+               poppedObject = JSON.parse(poppedObject.object);
+               console.log(poppedObject);
+               fabricObjects = canvas.getObjects();
+               for(i=0;i<fabricObjects.length;i++){
+                   if(fabricObjects[i]._id === poppedObject._id){
+                       fabricObjects[i].set(poppedObject);
+                       canvas.renderAll();
+                       break;
+                   }
+               }
+           }
        });
 
-       ui_expand.click(function (e) {
-           canvas.setZoom(canvas.getZoom() * fabricSettings.getScale());
-           canvas.renderAll();
+       ui_redo.on('click', function (evt) {
+
        });
+
+       ui_delete.on('click', function (evt) {
+           var o = canvas.getActiveObject();
+           if (o) {
+               canvas.remove(o);
+           }
+       });
+
+
+
+
+
+
+       /**
+        * Zoom In and Zoom Out function. This is yet to be created. The below code is just a POC.
+        * Do not use this until we create a collaboration system.
+        */
+
+       //    ui_undo.click(function (e) {
+       //        canvas.setZoom(canvas.getZoom() / fabricSettings.getScale());
+       //        canvas.renderAll();
+       //    });
+
+       //    ui_expand.click(function (e) {
+       //        canvas.setZoom(canvas.getZoom() * fabricSettings.getScale());
+       //        canvas.renderAll();
+       //    });
 
        $('.canvas-container').on('mousewheel', function (e) {
            e.preventDefault();
@@ -9468,7 +9532,7 @@ function Board() {
             // console.log(window._globalBoardData.data);
             var ObjectDataList = window._globalBoardData.data;
             for (var i = 0; i < ObjectDataList.length; i++) {
-                sessionStorage.setItem(ObjectDataList[i]._id, JSON.stringify(ObjectDataList[i].data));
+                sessionStorage.setItem(ObjectDataList[i].guid, JSON.stringify(ObjectDataList[i].data));
                 objectList.push(ObjectDataList[i].data);
             }
         } else {
@@ -9526,6 +9590,80 @@ module.exports = {
 
 module.exports = __webpack_require__(28);
 
+
+/***/ }),
+/* 70 */,
+/* 71 */
+/***/ (function(module, exports) {
+
+var list;
+var state; //Array of Objects where Object = { action: 'add/modify/remove', object: fabricObject }
+var canvas;
+var initialState;
+module.exports.initialize = function (c) {
+    canvas = c;
+    list = [];
+    state = [];
+    initialState = canvas.toJSON().objects;
+}
+
+module.exports.addObjectInState = function (o) {
+    state.push({
+        action: 'add',
+        object: o
+    });
+    console.log(state);
+};
+module.exports.modifyObjectInState = function (o) {
+    var oj = JSON.parse(o);
+    for (var j = initialState.length-1; j >= 0; j--) {
+        if (initialState[j]._id === oj._id) {
+            state.push({
+                action: 'modify',
+                object: JSON.stringify(initialState[j])
+            });
+            initialState.push(oj);
+            break;
+        }
+    }
+    console.log(state);
+};
+module.exports.removeObjectInState = function (o) {
+    state.push({
+        action: 'remove',
+        object: o
+    });
+    console.log(state);
+};
+
+module.exports.undo = function () {
+    var poppedObject = state.pop();
+    if (state.length > 0) {
+        console.log('what?');
+        var oj = JSON.parse(poppedObject.object);
+        if(state.action == 'modify'){
+            for(var i=initialState.length-1;i>=0;i--){
+                if(initialState[i]._id === oj._id){
+                    initialState.slice(i,1);
+                    initialState.push(oj);
+                }
+            }
+        }
+        return poppedObject;
+    }else if(state.length === 0){
+        if(!poppedObject){ return null; }
+        // console.log('what?');
+        // var oj = JSON.parse(poppedObject.object);
+        // if(state.action == 'modify'){
+        //     for(var i=0;i<initialState.length;i++){
+        //         if(initialState[i]._id === oj._id){
+        //             initialState[i] = oj;
+        //         }
+        //     }
+        // }
+        return poppedObject;
+    }
+}
 
 /***/ })
 /******/ ]);

@@ -217,3 +217,22 @@
 .member-add-share-modal{
     height: 230px;
 }
+.footer-extra-commands{
+    position: fixed;
+    bottom: 2px;
+    left: 5px;
+    z-index: 100000;
+    ul{
+        margin: 0;
+        padding: 0;
+        list-style: none outside none;
+        li{
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 15px;
+            background-color:transparent;
+            font-size: 14px;
+            border: 1px solid #ccc;
+        }
+    }
+}

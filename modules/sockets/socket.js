@@ -54,7 +54,10 @@ module.exports = function (io) {
             socket.broadcast.to(boardid).emit('object:modified', msg);
         });
         socket.on('object:removed', function (msg) {
-            console.log(msg);
+            BoardModel.deleteDataFromSocket(boardid,msg,function(err,result){
+                if(err) throw err;
+                console.log(result);
+            })
             socket.broadcast.to(boardid).emit('object:removed', msg);
         });
     });

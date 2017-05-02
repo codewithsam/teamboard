@@ -1,8 +1,11 @@
    var fabricSettings = require('./../configurations/fabric.configure');
    var features = require('./Features');
+   var undoRedo = require('./undoRedo');
+
    module.exports = function () {
        var canvas = fabricSettings.getCanvas();
        features.initialize(canvas);
+       undoRedo.initialize(canvas);
        // Extra Features
        var ui_upload = $('.ui-btn-upload');
        var ui_uploadfromURL = $('.ui-btn-from-url');
@@ -47,14 +50,18 @@
        // Comment on object
        var ui_comment = $('.ui-btn-comment');
 
-       //undo-redo
-       var ui_undo = $('.ui-btn-undo');
 
        //canvas pan zoom
        var ui_expand = $('.ui-btn-expand');
 
        //hand tool for moving canvas
        var ui_hand = $('.ui-btn-hand');
+
+       //some extra buttons
+
+       var ui_undo = $('.ui_extra_undo');
+       var ui_redo = $('.ui_extra_redo');
+       var ui_delete = $('.ui_extra_delete');
 
 
 
@@ -306,24 +313,71 @@
 
 
 
+       /**
+        * These are some extra features like undo redo and delete
+        */
 
-
-
-
-/**
- * Zoom In and Zoom Out function. This is yet to be created. The below code is just a POC.
- * Do not use this until we create a collaboration system.
- */
-
-       ui_undo.click(function (e) {
-           canvas.setZoom(canvas.getZoom() / fabricSettings.getScale());
-           canvas.renderAll();
+       ui_undo.on('click', function (evt) {
+           var fabricObjects, i;
+           var poppedObject = undoRedo.undo();
+           if(!poppedObject){
+               console.log('Nothing more to undo!');
+               return;
+           }
+           if(poppedObject.action === 'add'){
+               poppedObject = JSON.parse(poppedObject.object);
+               fabricObjects = canvas.getObjects();
+               for(i=0;i<fabricObjects.length;i++){
+                   if(fabricObjects[i]._id === poppedObject._id){
+                       canvas.remove(fabricObjects[i]);
+                       break;
+                   }
+               }
+           }
+           if(poppedObject.action === 'modify'){
+               poppedObject = JSON.parse(poppedObject.object);
+               console.log(poppedObject);
+               fabricObjects = canvas.getObjects();
+               for(i=0;i<fabricObjects.length;i++){
+                   if(fabricObjects[i]._id === poppedObject._id){
+                       fabricObjects[i].set(poppedObject);
+                       canvas.renderAll();
+                       break;
+                   }
+               }
+           }
        });
 
-       ui_expand.click(function (e) {
-           canvas.setZoom(canvas.getZoom() * fabricSettings.getScale());
-           canvas.renderAll();
+       ui_redo.on('click', function (evt) {
+
        });
+
+       ui_delete.on('click', function (evt) {
+           var o = canvas.getActiveObject();
+           if (o) {
+               canvas.remove(o);
+           }
+       });
+
+
+
+
+
+
+       /**
+        * Zoom In and Zoom Out function. This is yet to be created. The below code is just a POC.
+        * Do not use this until we create a collaboration system.
+        */
+
+       //    ui_undo.click(function (e) {
+       //        canvas.setZoom(canvas.getZoom() / fabricSettings.getScale());
+       //        canvas.renderAll();
+       //    });
+
+       //    ui_expand.click(function (e) {
+       //        canvas.setZoom(canvas.getZoom() * fabricSettings.getScale());
+       //        canvas.renderAll();
+       //    });
 
        $('.canvas-container').on('mousewheel', function (e) {
            e.preventDefault();
