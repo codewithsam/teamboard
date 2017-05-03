@@ -320,31 +320,41 @@
        ui_undo.on('click', function (evt) {
            var fabricObjects, i;
            var poppedObject = undoRedo.undo();
-           if(!poppedObject){
+           if (!poppedObject) {
                console.log('Nothing more to undo!');
                return;
            }
-           if(poppedObject.action === 'add'){
+           if (poppedObject.action === 'add') {
                poppedObject = JSON.parse(poppedObject.object);
                fabricObjects = canvas.getObjects();
-               for(i=0;i<fabricObjects.length;i++){
-                   if(fabricObjects[i]._id === poppedObject._id){
+               for (i = 0; i < fabricObjects.length; i++) {
+                   if (fabricObjects[i]._id === poppedObject._id) {
+                       fabricObjects[i].dustbin = true;
                        canvas.remove(fabricObjects[i]);
                        break;
                    }
                }
            }
-           if(poppedObject.action === 'modify'){
+           if (poppedObject.action === 'modify') {
                poppedObject = JSON.parse(poppedObject.object);
-               console.log(poppedObject);
                fabricObjects = canvas.getObjects();
-               for(i=0;i<fabricObjects.length;i++){
-                   if(fabricObjects[i]._id === poppedObject._id){
+               for (i = 0; i < fabricObjects.length; i++) {
+                   if (fabricObjects[i]._id === poppedObject._id) {
                        fabricObjects[i].set(poppedObject);
                        canvas.renderAll();
                        break;
                    }
                }
+           }
+           if (poppedObject.action === 'remove') {
+               poppedObject = JSON.parse(poppedObject.object);
+               poppedObject.dustbin = true;
+               fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
+                   fabricObjects.forEach(function (fabricObject) {
+                       canvas.add(fabricObject);
+                       canvas.renderAll();
+                   });
+               });
            }
        });
 
