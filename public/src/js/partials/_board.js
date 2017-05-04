@@ -1,4 +1,5 @@
 var events = require('./../lib/PubSub');
+var object_json = require('./../object-json/object.json');
 /* Share feature of whiteboard
 // This code blocks is used to add new members to board by sharing board (by entering emails of users you want to add).
 // It sends an ajax post request to /board/:boardid and the server will send a response which will tell if the entered email exists or not
@@ -64,5 +65,63 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {}
         });
+    });
+});
+
+
+$(document).ready(function () {
+    var flag = false;
+    $('.options-button-opener').click(function () {
+        if (!flag) {
+            flag = true;
+            $('.sidebar-options').stop(true).animate({
+                right: 0
+            });
+        } else {
+            flag = false;
+            $('.sidebar-options').stop(true).animate({
+                right: -350
+            });
+        }
+    });
+    $('div.split-pane').splitPane();
+    for (var prop in object_json) {
+        var proplist = $('.property-list ul');
+        var valuelist = $('.value-list ul');
+        if(object_json[prop] === 'cstring'){
+            valuelist.append($('<li><input class="cstring" type="text" value="12344512" readonly disabled=true/></li>'));
+        }
+        if(object_json[prop] === 'string'){
+            valuelist.append($('<li><input type="text" /></li>'));
+        }
+        if(object_json[prop] === 'number'){
+            valuelist.append($('<li><input type="number" /></li>'));
+        }
+        if(object_json[prop] === 'color'){
+            valuelist.append($('<li><input type="color" name="favcolor" value="#ff0000"></li>'));
+        }
+        if(object_json[prop] === 'boolean'){
+        var obb = object_json[prop];
+            var sell = $('<select>');
+            var liss = $('<li>');
+            valuelist.append(liss);
+            liss.append(sell);
+            sell.append($('<option value="true">true</option>'));
+            sell.append($('<option value="false">false</option>'));            
+        }
+        if(typeof object_json[prop] === 'object'){
+            var ob = object_json[prop];
+            var sel = $('<select>');
+            var lis = $('<li>');
+            valuelist.append(lis);
+            lis.append(sel);
+            for(var i=0;i<ob.length;i++){
+                sel.append($('<option value="'+ob[i]+'">'+ob[i]+'</option>'));
+            }
+        }
+        proplist.append($('<li>' + prop + '</li>'));
+    }
+    $('#left-component, #right-component').on('scroll', function () {
+        $('#right-component').scrollTop($('#left-component').scrollTop());        
     });
 });

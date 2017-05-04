@@ -69,7 +69,11 @@
         * Required to reset all unused events
         */
 
-
+/**
+ * 
+ * These buttons are disabled until we create features for them.
+ */
+        ui_redo.addClass('li-disabled');
 
 
 
@@ -359,7 +363,43 @@
        });
 
        ui_redo.on('click', function (evt) {
-
+        //    var poppedObject = undoRedo.redo();
+        //    if (!poppedObject) {
+        //        console.log('Nothing more to redo!');
+        //        return;
+        //    }
+        //    if (poppedObject.action === 'add') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        fabricObjects = canvas.getObjects();
+        //        for (i = 0; i < fabricObjects.length; i++) {
+        //            if (fabricObjects[i]._id === poppedObject._id) {
+        //                fabricObjects[i].dustbin = true;
+        //                canvas.remove(fabricObjects[i]);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    if (poppedObject.action === 'modify') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        fabricObjects = canvas.getObjects();
+        //        for (i = 0; i < fabricObjects.length; i++) {
+        //            if (fabricObjects[i]._id === poppedObject._id) {
+        //                fabricObjects[i].set(poppedObject);
+        //                canvas.renderAll();
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    if (poppedObject.action === 'remove') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        poppedObject.dustbin = true;
+        //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
+        //            fabricObjects.forEach(function (fabricObject) {
+        //                canvas.add(fabricObject);
+        //                canvas.renderAll();
+        //            });
+        //        });
+        //    }
        });
 
        ui_delete.on('click', function (evt) {

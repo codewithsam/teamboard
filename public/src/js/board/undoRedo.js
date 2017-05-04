@@ -10,6 +10,7 @@ module.exports.initialize = function (c) {
 }
 
 module.exports.addObjectInState = function (o) {
+    list = [];
     state.push({
         action: 'add',
         object: o
@@ -18,6 +19,7 @@ module.exports.addObjectInState = function (o) {
     console.log(state);
 };
 module.exports.modifyObjectInState = function (o) {
+    list = [];
     var oj = JSON.parse(o);
     for (var j = initialState.length-1; j >= 0; j--) {
         if (initialState[j]._id === oj._id) {
@@ -32,6 +34,7 @@ module.exports.modifyObjectInState = function (o) {
     console.log(state);
 };
 module.exports.removeObjectInState = function (o) {
+    list = [];
     state.push({
         action: 'remove',
         object: JSON.stringify(o)
@@ -43,6 +46,18 @@ module.exports.removeObjectInState = function (o) {
 module.exports.undo = function () {
     console.log(state);
     var poppedObject = state[state.length-1];
+    // var stateobj = JSON.parse(poppedObject.object);
+    // var currObjs = canvas.toJSON().objects;
+    // for(var c = 0;c<currObjs.length;c++){
+    //     if(currObjs[c]._id === stateobj._id){
+    //         list.push({
+    //             action: poppedObject.action,
+    //             object: JSON.stringify(currObjs[c])
+    //         });
+    //         break;
+    //     }
+    // }
+    // console.log('redo: ', list);
     if(poppedObject){
         var oj = JSON.parse(poppedObject.object);        
         if(poppedObject.action == 'modify'){
@@ -55,6 +70,14 @@ module.exports.undo = function () {
     }
     if (state.length > 0) {
         return state.pop();
+    }else{
+        return null;
+    }
+};
+
+module.exports.redo = function(){
+    if(list.length >0){
+        return list.pop();
     }else{
         return null;
     }

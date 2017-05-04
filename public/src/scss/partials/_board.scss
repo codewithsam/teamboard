@@ -210,29 +210,171 @@
         color: #bbb;
     }
 }
-.added-members{
+
+.added-members {
     margin-top: 10px;
     padding: 10px 0px;
 }
-.member-add-share-modal{
+
+.member-add-share-modal {
     height: 230px;
 }
-.footer-extra-commands{
+
+.footer-extra-commands {
     position: fixed;
     bottom: 2px;
     left: 5px;
     z-index: 100000;
-    ul{
+    ul {
         margin: 0;
         padding: 0;
         list-style: none outside none;
-        li{
+        li {
             cursor: pointer;
             display: inline-block;
             padding: 5px 15px;
-            background-color:transparent;
+            background-color: transparent;
             font-size: 14px;
             border: 1px solid #ccc;
         }
+    }
+}
+
+.li-disabled {
+    pointer-events: none; //This makes it not clickable
+    opacity: 0.6; //This grays it out to look disabled
+}
+
+.sidebar-options {
+    position: fixed;
+    top: 0px;
+    right: -350px;
+    width: 350px;
+    height: 100%;
+    z-index: 1000000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0px 3px 3px #ccc;
+    .sidebar-options-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.options-button-opener {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #fdfcfc;
+    color: #777;
+    position: absolute;
+    left: -73px;
+    top: 100px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    box-shadow: 0px -1px 4px #eee;
+    transform: rotate(-90deg);
+    span {
+        display: block;
+        width: auto;
+        height: auto;
+    }
+}
+
+.property-header {
+    padding: 5px 10px;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.property-property {
+    background-color: #286090;
+}
+
+.property-value {
+    background-color: #5cb85c;
+}
+
+.split-pane-divider {
+    background: #eee;
+    border: 1px solid #ccc;
+}
+
+#left-component {
+    width: 50%;
+    z-index: 1;
+    position: relative;
+}
+
+#my-divider {
+    left: 50%;
+    width: 5px;
+}
+
+#right-component {
+    left: 50%;
+    margin-left: 5px;
+    z-index: 2;
+    background-color: #fff;
+    
+}
+.left-component-wrapper,.right-component-wrapper{
+    // width: 100%;
+    // height: 100%;
+    // position: absolute;
+    // top: 0;
+    // bottom: 0;
+    // overflow-y: scroll;
+}
+.property-list{
+
+    ul{
+        
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+        li{
+            height: 30px;
+            padding: 5px 5px 5px 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+    }
+}
+.value-list{
+    ul{
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+        li{
+            height: 30px;            
+            padding: 5px 5px 5px 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+    }
+    input[type="text"], input[type="number"]{
+        width: 100%;
+        height: 20px;        
+    }
+    input[type="color"]{
+        width: 60%;
+        height: 22px;        
+    }
+    input[type="checkbox"]{
+        padding: 0;
+        margin:0;
+    }
+    input[type="file"]{
+        width: 100%;
+        height: 20px;
+        font-size: 10px;
+    }
+    select{
+        width: 90%;
+        height: 20px;
+        margin-left: 5px;
     }
 }

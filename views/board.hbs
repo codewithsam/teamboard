@@ -152,17 +152,152 @@
     </ul>
 </div>
 <div class="footer-extra-commands">
-            <ul>
-                <li class="ui_extra_undo">
-                    <div><i class="fa fa-undo"></i></div>
-                </li><li class="ui_extra_redo">
-                    <div><i class="fa fa-repeat"></i></div>
-                </li><li class="ui_extra_delete">
-                    <div><i class="fa fa-trash-o"></i></div>
-                </li>
-            </ul>
+    <ul>
+        <li class="ui_extra_undo">
+            <div><i class="fa fa-undo"></i></div>
+        </li>
+        <li class="ui_extra_redo">
+            <div><i class="fa fa-repeat"></i></div>
+        </li>
+        <li class="ui_extra_delete">
+            <div><i class="fa fa-trash-o"></i></div>
+        </li>
+    </ul>
 </div>
-<canvas id="canvas" width="800" height="800"></canvas>
+<canvas id="canvas" width="1500" height="1500"></canvas>
+
+
+
+<div class="sidebar-options sidebar-property-close">
+    <div class="sidebar-options-wrapper">
+        <button class="options-button-opener">
+            <span>Properties</span>
+        </button>
+
+        <div id="split-pane-1" class="split-pane fixed-left">
+            <div id="left-component" class="split-pane-component">
+                <div class="left-component-wrapper">
+                    <div class="property-header property-property">
+                    Property
+                </div>
+                <div class="property-list">
+                    <ul>
+                        <!--<li>Prop One</li>
+                        <li>Prop two</li>
+                        <li>Prop three</li>
+                        <li>Prop four</li>
+                        <li>Prop five</li>
+                        <li>Prop six</li>
+                        <li>Prop seven</li>
+                        <li>Prop eight</li>
+                        <li>Prop One</li>
+                        <li>Prop two</li>
+                        <li>Prop three</li>
+                        <li>Prop four</li>
+                        <li>Prop five</li>
+                        <li>Prop six</li>
+                        <li>Prop seven</li>
+                        <li>Prop eight</li>
+                        <li>Prop One</li>
+                        <li>Prop two</li>
+                        <li>Prop three</li>
+                        <li>Prop four</li>
+                        <li>Prop five</li>
+                        <li>Prop six</li>
+                        <li>Prop seven</li>
+                        <li>Prop eight</li>-->
+                    </ul>
+                </div>
+                </div>
+            </div>
+            <div id="my-divider" class="split-pane-divider"></div>
+            <div id="right-component" class="split-pane-component">
+                <div class="right-component-wrapper">
+                    <div class="property-header property-value">
+                    Value
+                </div>
+                <div class="property-value">
+                </div>
+                <div class="value-list">
+                    <ul>
+                        <!--<li><input type="number" /></li>
+                        <li>
+                            <select>
+                                <option value="option 1">option 1</option>
+                                <option value="option 2">option 2</option>
+                                <option value="option 3">option 3</option>
+                                <option value="option 4">option 4</option>
+                                
+                            </select>
+                        </li>
+                        <li><input type="text" value="12344512" /></li>
+                        <li><input class="cstring" type="text" value="12344512" readonly disabled=true/></li>
+                        <li><input type="checkbox" value=""></li>
+                        <li>
+                            <select>
+                                <option value="option 1">true</option>
+                                <option value="option 2">false</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="color" name="favcolor" value="#ff0000">
+                        </li>
+                        <li><input type="file"></li>
+                        <li><input type="number" /></li>
+                        <li>
+                            <select>
+                                <option value="option 1">option 1</option>
+                                <option value="option 2">option 2</option>
+                                <option value="option 3">option 3</option>
+                                <option value="option 4">option 4</option>
+                                
+                            </select>
+                        </li>
+                        <li><input type="text" value="12344512" /></li>
+                        <li><input class="cstring" type="text" value="12344512" readonly disabled=true/></li>
+                        <li><input type="checkbox" value=""></li>
+                        <li>
+                            <select>
+                                <option value="option 1">true</option>
+                                <option value="option 2">false</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="color" name="favcolor" value="#ff0000">
+                        </li>
+                        <li><input type="file"></li>
+                        <li><input type="number" /></li>
+                        <li>
+                            <select>
+                                <option value="option 1">option 1</option>
+                                <option value="option 2">option 2</option>
+                                <option value="option 3">option 3</option>
+                                <option value="option 4">option 4</option>
+                                
+                            </select>
+                        </li>
+                        <li><input type="text" value="12344512" /></li>
+                        <li><input class="cstring" type="text" value="12344512" readonly disabled=true/></li>
+                        <li><input type="checkbox" value=""></li>
+                        <li>
+                            <select>
+                                <option value="option 1">true</option>
+                                <option value="option 2">false</option>
+                            </select>
+                        </li>
+                        <li>
+                            <input type="color" name="favcolor" value="#ff0000">
+                        </li>
+                        <li><input type="file"></li>-->
+                    </ul>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 
 
@@ -190,6 +325,8 @@
 </div>
 <!-- /.modal -->
 
+<link rel="stylesheet" href="/dist/bower_components/split-pane/split-pane.css">
+
 <script>
     (function () {
         $(document).ready(function () {
@@ -199,11 +336,11 @@
             });
         });
     })();
-
 </script>
 <script>
     window._globalBoardData = JSON.parse('{{{teams}}}');
 </script>
 <script src="/dist/bower_components/fabric.js/dist/fabric.js"></script>
 <script src="/dist/js/_partials.bundle.js"></script>
+<script src="/dist/bower_components/split-pane/split-pane.js"></script>
 <script src="/dist/js/app.bundle.js"></script>

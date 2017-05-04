@@ -15,6 +15,7 @@ module.exports = function () {
             return;
         }
         if(!fabricObject.dustbin)UndoRedo.addObjectInState(JSON.stringify(fabricObject));
+        else fabricObject.dustbin = null;
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log('object:added');
         socket.emit('object:added', fabricObject);
@@ -64,6 +65,7 @@ module.exports = function () {
         sessionStorage.removeItem(ObjectId);
         sessionStorage.getItem(ObjectId);
         if(!e.target.dustbin)UndoRedo.removeObjectInState(e.target);
+        else e.target.dustbin = null;
 
         socket.emit('object:removed', ObjectId);
     });

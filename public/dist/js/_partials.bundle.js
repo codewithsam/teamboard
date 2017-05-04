@@ -122,6 +122,7 @@ __webpack_require__(68);
 /***/ (function(module, exports, __webpack_require__) {
 
 var events = __webpack_require__(13);
+var object_json = __webpack_require__(72);
 /* Share feature of whiteboard
 // This code blocks is used to add new members to board by sharing board (by entering emails of users you want to add).
 // It sends an ajax post request to /board/:boardid and the server will send a response which will tell if the entered email exists or not
@@ -190,6 +191,64 @@ $(document).ready(function () {
     });
 });
 
+
+$(document).ready(function () {
+    var flag = false;
+    $('.options-button-opener').click(function () {
+        if (!flag) {
+            flag = true;
+            $('.sidebar-options').stop(true).animate({
+                right: 0
+            });
+        } else {
+            flag = false;
+            $('.sidebar-options').stop(true).animate({
+                right: -350
+            });
+        }
+    });
+    $('div.split-pane').splitPane();
+    for (var prop in object_json) {
+        var proplist = $('.property-list ul');
+        var valuelist = $('.value-list ul');
+        if(object_json[prop] === 'cstring'){
+            valuelist.append($('<li><input class="cstring" type="text" value="12344512" readonly disabled=true/></li>'));
+        }
+        if(object_json[prop] === 'string'){
+            valuelist.append($('<li><input type="text" /></li>'));
+        }
+        if(object_json[prop] === 'number'){
+            valuelist.append($('<li><input type="number" /></li>'));
+        }
+        if(object_json[prop] === 'color'){
+            valuelist.append($('<li><input type="color" name="favcolor" value="#ff0000"></li>'));
+        }
+        if(object_json[prop] === 'boolean'){
+        var obb = object_json[prop];
+            var sell = $('<select>');
+            var liss = $('<li>');
+            valuelist.append(liss);
+            liss.append(sell);
+            sell.append($('<option value="true">true</option>'));
+            sell.append($('<option value="false">false</option>'));            
+        }
+        if(typeof object_json[prop] === 'object'){
+            var ob = object_json[prop];
+            var sel = $('<select>');
+            var lis = $('<li>');
+            valuelist.append(lis);
+            lis.append(sel);
+            for(var i=0;i<ob.length;i++){
+                sel.append($('<option value="'+ob[i]+'">'+ob[i]+'</option>'));
+            }
+        }
+        proplist.append($('<li>' + prop + '</li>'));
+    }
+    $('#left-component, #right-component').on('scroll', function () {
+        $('#right-component').scrollTop($('#left-component').scrollTop());        
+    });
+});
+
 /***/ }),
 
 /***/ 68:
@@ -229,6 +288,133 @@ $(document).ready(function () {
 
 module.exports = __webpack_require__(30);
 
+
+/***/ }),
+
+/***/ 72:
+/***/ (function(module, exports) {
+
+module.exports = {
+	"_id": "cstring",
+	"angle": "number",
+	"backgroundColor": "color",
+	"charSpacing": "number",
+	"fill": "color",
+	"fillRule": [
+		"nonzero",
+		"evenodd"
+	],
+	"flipX": "boolean",
+	"flipY": "boolean",
+	"fontFamily": [
+		"Andale Mono",
+		"Arial",
+		"Arial Bold",
+		"Arial Italic",
+		"Arial Bold Italic",
+		"Arial Black",
+		"Comic Sans MS",
+		"Comic Sans MS Bold",
+		"Courier New",
+		"Courier New Bold",
+		"Courier New Italic",
+		"Courier New Bold Italic",
+		"Georgia",
+		"Georgia Bold",
+		"Georgia Italic",
+		"Georgia Bold Italic",
+		"Impact",
+		"Lucida Console",
+		"Lucida Sans Unicode",
+		"Marlett",
+		"Minion Web",
+		"Symbol",
+		"Times New Roman",
+		"Times New Roman Bold",
+		"Times New Roman Italic",
+		"Times New Roman Bold Italic",
+		"Tahoma",
+		"Trebuchet MS",
+		"Trebuchet MS Bold",
+		"Trebuchet MS Italic",
+		"Trebuchet MS Bold Italic",
+		"Verdana",
+		"Verdana Bold",
+		"Verdana Italic",
+		"Verdana Bold Italic",
+		"Webdings"
+	],
+	"fontSize": "number",
+	"fontStyle": [
+		"normal",
+		"italic",
+		"oblique"
+	],
+	"fontWeight": [
+		"normal",
+		"bold"
+	],
+	"height": "number",
+	"left": "number",
+	"lineHeight": "number",
+	"opacity": "number",
+	"originX": [
+		"center",
+		"left",
+		"top",
+		"right",
+		"bottom"
+	],
+	"originY": [
+		"center",
+		"left",
+		"top",
+		"right",
+		"bottom"
+	],
+	"scaleX": "number",
+	"scaleY": "number",
+	"shadow": "color",
+	"skewX": "number",
+	"skewY": "number",
+	"stroke": "number",
+	"strokeDashArray": "string",
+	"strokeLineCap": [
+		"butt",
+		"round",
+		"square",
+		"inherit"
+	],
+	"strokeLineJoin": [
+		"miter",
+		"round",
+		"bevel",
+		"inherit"
+	],
+	"strokeMiterLimit": "number",
+	"strokeWidth": "number",
+	"text": "string",
+	"textAlign": [
+		"left",
+		"top",
+		"right",
+		"bottom",
+		"center"
+	],
+	"textBackgroundColor": "color",
+	"textDecoration": [
+		"underline",
+		"overline",
+		"line-through"
+	],
+	"top": "number",
+	"transformMatrix": "string",
+	"type": "cstring",
+	"visible": "boolean",
+	"width": "number",
+	"rx": "number",
+	"ry": "number"
+};
 
 /***/ })
 

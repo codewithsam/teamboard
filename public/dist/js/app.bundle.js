@@ -3923,6 +3923,7 @@ module.exports.initialize = function (c) {
 }
 
 module.exports.addObjectInState = function (o) {
+    list = [];
     state.push({
         action: 'add',
         object: o
@@ -3931,6 +3932,7 @@ module.exports.addObjectInState = function (o) {
     console.log(state);
 };
 module.exports.modifyObjectInState = function (o) {
+    list = [];
     var oj = JSON.parse(o);
     for (var j = initialState.length-1; j >= 0; j--) {
         if (initialState[j]._id === oj._id) {
@@ -3945,6 +3947,7 @@ module.exports.modifyObjectInState = function (o) {
     console.log(state);
 };
 module.exports.removeObjectInState = function (o) {
+    list = [];
     state.push({
         action: 'remove',
         object: JSON.stringify(o)
@@ -3956,6 +3959,18 @@ module.exports.removeObjectInState = function (o) {
 module.exports.undo = function () {
     console.log(state);
     var poppedObject = state[state.length-1];
+    // var stateobj = JSON.parse(poppedObject.object);
+    // var currObjs = canvas.toJSON().objects;
+    // for(var c = 0;c<currObjs.length;c++){
+    //     if(currObjs[c]._id === stateobj._id){
+    //         list.push({
+    //             action: poppedObject.action,
+    //             object: JSON.stringify(currObjs[c])
+    //         });
+    //         break;
+    //     }
+    // }
+    // console.log('redo: ', list);
     if(poppedObject){
         var oj = JSON.parse(poppedObject.object);        
         if(poppedObject.action == 'modify'){
@@ -3968,6 +3983,14 @@ module.exports.undo = function () {
     }
     if (state.length > 0) {
         return state.pop();
+    }else{
+        return null;
+    }
+};
+
+module.exports.redo = function(){
+    if(list.length >0){
+        return list.pop();
     }else{
         return null;
     }
@@ -9108,6 +9131,7 @@ module.exports = function () {
             return;
         }
         if(!fabricObject.dustbin)UndoRedo.addObjectInState(JSON.stringify(fabricObject));
+        else fabricObject.dustbin = null;
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log('object:added');
         socket.emit('object:added', fabricObject);
@@ -9157,6 +9181,7 @@ module.exports = function () {
         sessionStorage.removeItem(ObjectId);
         sessionStorage.getItem(ObjectId);
         if(!e.target.dustbin)UndoRedo.removeObjectInState(e.target);
+        else e.target.dustbin = null;
 
         socket.emit('object:removed', ObjectId);
     });
@@ -9249,7 +9274,11 @@ module.exports = function () {
         * Required to reset all unused events
         */
 
-
+/**
+ * 
+ * These buttons are disabled until we create features for them.
+ */
+        ui_redo.addClass('li-disabled');
 
 
 
@@ -9539,7 +9568,43 @@ module.exports = function () {
        });
 
        ui_redo.on('click', function (evt) {
-
+        //    var poppedObject = undoRedo.redo();
+        //    if (!poppedObject) {
+        //        console.log('Nothing more to redo!');
+        //        return;
+        //    }
+        //    if (poppedObject.action === 'add') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        fabricObjects = canvas.getObjects();
+        //        for (i = 0; i < fabricObjects.length; i++) {
+        //            if (fabricObjects[i]._id === poppedObject._id) {
+        //                fabricObjects[i].dustbin = true;
+        //                canvas.remove(fabricObjects[i]);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    if (poppedObject.action === 'modify') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        fabricObjects = canvas.getObjects();
+        //        for (i = 0; i < fabricObjects.length; i++) {
+        //            if (fabricObjects[i]._id === poppedObject._id) {
+        //                fabricObjects[i].set(poppedObject);
+        //                canvas.renderAll();
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    if (poppedObject.action === 'remove') {
+        //        poppedObject = JSON.parse(poppedObject.object);
+        //        poppedObject.dustbin = true;
+        //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
+        //            fabricObjects.forEach(function (fabricObject) {
+        //                canvas.add(fabricObject);
+        //                canvas.renderAll();
+        //            });
+        //        });
+        //    }
        });
 
        ui_delete.on('click', function (evt) {
