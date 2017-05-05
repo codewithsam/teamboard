@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 70);
+/******/ 	return __webpack_require__(__webpack_require__.s = 71);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -6332,7 +6332,7 @@ var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 var NodeWebSocket;
 if (typeof window === 'undefined') {
   try {
-    NodeWebSocket = __webpack_require__(69);
+    NodeWebSocket = __webpack_require__(70);
   } catch (e) { }
 }
 
@@ -9118,6 +9118,8 @@ var fabricSettings = __webpack_require__(12);
 var socket = __webpack_require__(28).getInstance();
 var util = __webpack_require__(11);
 var UndoRedo = __webpack_require__(27);
+var object_json = __webpack_require__(67);
+
 
 module.exports = function () {
     var canvas = fabricSettings.getCanvas();
@@ -9130,7 +9132,7 @@ module.exports = function () {
             console.log("not again");
             return;
         }
-        if(!fabricObject.dustbin)UndoRedo.addObjectInState(JSON.stringify(fabricObject));
+        if (!fabricObject.dustbin) UndoRedo.addObjectInState(JSON.stringify(fabricObject));
         else fabricObject.dustbin = null;
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log('object:added');
@@ -9157,7 +9159,7 @@ module.exports = function () {
         console.log("Object changed");
         UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
-
+        resetPropertyDialog(e);
     });
 
     socket.on('object:modified', function (rawObject) {
@@ -9180,7 +9182,7 @@ module.exports = function () {
         console.log(ObjectId);
         sessionStorage.removeItem(ObjectId);
         sessionStorage.getItem(ObjectId);
-        if(!e.target.dustbin)UndoRedo.removeObjectInState(e.target);
+        if (!e.target.dustbin) UndoRedo.removeObjectInState(e.target);
         else e.target.dustbin = null;
 
         socket.emit('object:removed', ObjectId);
@@ -9197,7 +9199,182 @@ module.exports = function () {
             console.warn('No object found: ', id);
         }
     });
+    canvas.on('object:selected', resetPropertyDialog);
 };
+
+
+
+// function resetPropertyDialog(e) {
+//     var proplist = $('.property-list ul');
+//     var valuelist = $('.value-list ul');
+//     proplist.html('');
+//     valuelist.html('');
+//     var textToInsert = [];
+//     if (e.target.get('fill').length === 6) {
+//         e.target.set('fill', e.target.get('fill') + "0");
+//     }
+//     var selectedObject = e.target.toObject();
+//     for (var prop in selectedObject) {
+//         var propAttr = object_json[prop];
+//         if (propAttr) {
+//             if (propAttr === 'cstring') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="null" readonly disabled=true/></li>'));
+//                 }else{
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>'));
+
+//                 }
+//             }
+//             if (propAttr === 'string') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="null" /></li>'));
+//                 }else{
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="' + e.target.get(prop) + '" /></li>'));
+
+//                 }
+//             }
+//             if (propAttr === 'number') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number" value="0" /></li>'));
+//                 }else{
+
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number"  value="' + e.target.get(prop) + '" /></li>'));
+//                 }
+//             }
+//             if (propAttr === 'color') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" />NULL</li>'));
+//                 } else {
+//                     if (e.target.get(prop).length === 6) {
+//                         e.target.set(prop, e.target.get(prop) + "0");
+//                     }
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" value="' + e.target.get(prop) + '" /></li>'));
+
+//                 }
+
+//             }
+//             if (propAttr === 'boolean') {
+//                 var obb = propAttr;
+//                 var sell = $('<select  class="objectChanger" data-prop="'+prop+'">');
+//                 var liss = $('<li>');
+//                 valuelist.append(liss);
+//                 liss.append(sell);
+//                 // if( value="'+selectedObject[prop]+'")                    
+//                 if (e.target.get(prop) === true) {
+//                     sell.append($('<option value="true" selected>true</option>'));
+//                     sell.append($('<option value="false">false</option>'));
+//                 } else {
+//                     sell.append($('<option value="true">true</option>'));
+//                     sell.append($('<option value="false" selected>false</option>'));
+//                 }
+//             }
+//             if (typeof propAttr === 'object') {
+//                 var ob = propAttr;
+//                 var sel = $('<select  class="objectChanger" data-prop="'+prop+'">');
+//                 var lis = $('<li>');
+//                 valuelist.append(lis);
+//                 lis.append(sel);
+//                 for (var i = 0; i < ob.length; i++) {
+//                     if (ob[i] === e.target.get(prop)) {
+//                         sel.append($('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>'));
+//                     } else {
+//                         sel.append($('<option value="' + ob[i] + '">' + ob[i] + '</option>'));
+//                     }
+
+//                 }
+//             }
+//             proplist.append($('<li>' + prop + '</li>'));
+//         }
+//     }
+// }
+
+
+
+
+function resetPropertyDialog(e) {
+    var proplist = $('.property-list ul');
+    var valuelist = $('.value-list ul');
+    proplist.html('');
+    valuelist.html('');
+    var textToInsert = [];
+    var propToInsert = [];
+    if (e.target.get('fill').length === 6) {
+        e.target.set('fill', e.target.get('fill') + "0");
+    }
+    var selectedObject = e.target.toObject();
+    for (var prop in selectedObject) {
+        var propAttr = object_json[prop];
+        if (propAttr) {
+            if (propAttr === 'cstring') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" class="cstring" type="text" value="null" readonly disabled=true/></li>');
+                } else {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>');
+
+                }
+            }
+            if (propAttr === 'string') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="text" value="null" /></li>');
+                } else {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="text" value="' + e.target.get(prop) + '" /></li>');
+
+                }
+            }
+            if (propAttr === 'number') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="number" value="0" /></li>');
+                } else {
+
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="number"  value="' + e.target.get(prop) + '" /></li>');
+                }
+            }
+            if (propAttr === 'color') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="color" />NULL</li>');
+                } else {
+                    if (e.target.get(prop).length === 6) {
+                        e.target.set(prop, e.target.get(prop) + "0");
+                    }
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="color" value="' + e.target.get(prop) + '" /></li>');
+
+                }
+
+            }
+            if (propAttr === 'boolean') {
+                var obb = propAttr;
+                textToInsert.push('<li>');
+                textToInsert.push('<select  class="objectChanger" data-prop="' + prop + '">');
+                if (e.target.get(prop) === true) {
+                    textToInsert.push('<option value="true" selected>true</option>');
+                    textToInsert.push('<option value="false">false</option>');
+                } else {
+                    textToInsert.push('<option value="true">true</option>');
+                    textToInsert.push('<option value="false" selected>false</option>');
+                }
+                textToInsert.push('</select>');
+                textToInsert.push('</li>');
+            }
+            if (typeof propAttr === 'object') {
+                var ob = propAttr;
+                textToInsert.push('<li>');
+                textToInsert.push('<select  class="objectChanger" data-prop="' + prop + '">');
+                for (var i = 0; i < ob.length; i++) {
+                    if (ob[i] === e.target.get(prop)) {
+                        textToInsert.push('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>');
+                    } else {
+                        textToInsert.push('<option value="' + ob[i] + '">' + ob[i] + '</option>');
+                    }
+                }
+                textToInsert.push('</select>');
+                textToInsert.push('</li>');
+            }
+            propToInsert.push('<li>' + prop + '</li>');
+        }
+    }
+    proplist.append(propToInsert.join(''));
+    valuelist.append(textToInsert.join(''));    
+}
 
 /***/ }),
 /* 64 */
@@ -9269,16 +9446,17 @@ module.exports = function () {
        var ui_delete = $('.ui_extra_delete');
 
 
-
+       var proplist = $('.property-list ul');
+       var valuelist = $('.value-list ul');
        /**
         * Required to reset all unused events
         */
 
-/**
- * 
- * These buttons are disabled until we create features for them.
- */
-        ui_redo.addClass('li-disabled');
+       /**
+        * 
+        * These buttons are disabled until we create features for them.
+        */
+       ui_redo.addClass('li-disabled');
 
 
 
@@ -9296,7 +9474,7 @@ module.exports = function () {
            canvas.on('mouse:down', function (e) {
                features.createText({
                    fontFamily: 'arial black',
-                   fill: '#00000',
+                   fill: '#000000',
                    left: canvas.getPointer(e.e).x,
                    top: canvas.getPointer(e.e).y,
                    width: 50,
@@ -9328,8 +9506,8 @@ module.exports = function () {
                    originX: 'center',
                    originY: 'center',
                    radius: 30,
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('circle added');
@@ -9353,8 +9531,8 @@ module.exports = function () {
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('square added');
@@ -9379,8 +9557,8 @@ module.exports = function () {
                    height: 50,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    borderRadius: 2
                }, function (err, object) {
@@ -9405,9 +9583,9 @@ module.exports = function () {
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
+                   fill: '#ffffff',
                    strokeWidth: 2,
-                   stroke: '#000'
+                   stroke: '#000000'
                }, function (err, object) {
                    console.log('triangle added');
                    canvas.add(object);
@@ -9431,8 +9609,8 @@ module.exports = function () {
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    rx: 10,
                    ry: 10
@@ -9456,8 +9634,8 @@ module.exports = function () {
                    top: canvas.getPointer(e.e).y,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('star added');
@@ -9479,8 +9657,8 @@ module.exports = function () {
                    top: canvas.getPointer(e.e).y,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('hexagon added');
@@ -9505,8 +9683,8 @@ module.exports = function () {
                    angle: 45,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    borderRadius: 2
                }, function (err, object) {
@@ -9568,43 +9746,43 @@ module.exports = function () {
        });
 
        ui_redo.on('click', function (evt) {
-        //    var poppedObject = undoRedo.redo();
-        //    if (!poppedObject) {
-        //        console.log('Nothing more to redo!');
-        //        return;
-        //    }
-        //    if (poppedObject.action === 'add') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        fabricObjects = canvas.getObjects();
-        //        for (i = 0; i < fabricObjects.length; i++) {
-        //            if (fabricObjects[i]._id === poppedObject._id) {
-        //                fabricObjects[i].dustbin = true;
-        //                canvas.remove(fabricObjects[i]);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    if (poppedObject.action === 'modify') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        fabricObjects = canvas.getObjects();
-        //        for (i = 0; i < fabricObjects.length; i++) {
-        //            if (fabricObjects[i]._id === poppedObject._id) {
-        //                fabricObjects[i].set(poppedObject);
-        //                canvas.renderAll();
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    if (poppedObject.action === 'remove') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        poppedObject.dustbin = true;
-        //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
-        //            fabricObjects.forEach(function (fabricObject) {
-        //                canvas.add(fabricObject);
-        //                canvas.renderAll();
-        //            });
-        //        });
-        //    }
+           //    var poppedObject = undoRedo.redo();
+           //    if (!poppedObject) {
+           //        console.log('Nothing more to redo!');
+           //        return;
+           //    }
+           //    if (poppedObject.action === 'add') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        fabricObjects = canvas.getObjects();
+           //        for (i = 0; i < fabricObjects.length; i++) {
+           //            if (fabricObjects[i]._id === poppedObject._id) {
+           //                fabricObjects[i].dustbin = true;
+           //                canvas.remove(fabricObjects[i]);
+           //                break;
+           //            }
+           //        }
+           //    }
+           //    if (poppedObject.action === 'modify') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        fabricObjects = canvas.getObjects();
+           //        for (i = 0; i < fabricObjects.length; i++) {
+           //            if (fabricObjects[i]._id === poppedObject._id) {
+           //                fabricObjects[i].set(poppedObject);
+           //                canvas.renderAll();
+           //                break;
+           //            }
+           //        }
+           //    }
+           //    if (poppedObject.action === 'remove') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        poppedObject.dustbin = true;
+           //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
+           //            fabricObjects.forEach(function (fabricObject) {
+           //                canvas.add(fabricObject);
+           //                canvas.renderAll();
+           //            });
+           //        });
+           //    }
        });
 
        ui_delete.on('click', function (evt) {
@@ -9644,6 +9822,28 @@ module.exports = function () {
                canvas.renderAll();
            }
        });
+
+
+
+
+       $(valuelist).on('change', function (evt) {
+           if ($(evt.target).is('.objectChanger')) {
+               var changedVal = $(evt.target).val();
+               var prop = $(evt.target).data('prop');
+               var selectedObject = canvas.getActiveObject();
+               console.log(prop, changedVal);
+               selectedObject.set(prop, changedVal);
+               canvas.renderAll();
+           }
+
+       });
+
+
+
+
+
+
+
 
 
    };
@@ -9718,15 +9918,141 @@ module.exports = {
 }
 
 /***/ }),
-/* 67 */,
+/* 67 */
+/***/ (function(module, exports) {
+
+module.exports = {
+	"_id": "cstring",
+	"angle": "number",
+	"backgroundColor": "color",
+	"charSpacing": "number",
+	"fill": "color",
+	"fillRule": [
+		"nonzero",
+		"evenodd"
+	],
+	"flipX": "boolean",
+	"flipY": "boolean",
+	"fontFamily": [
+		"Andale Mono",
+		"Arial",
+		"Arial Bold",
+		"Arial Italic",
+		"Arial Bold Italic",
+		"Arial Black",
+		"Comic Sans MS",
+		"Comic Sans MS Bold",
+		"Courier New",
+		"Courier New Bold",
+		"Courier New Italic",
+		"Courier New Bold Italic",
+		"Georgia",
+		"Georgia Bold",
+		"Georgia Italic",
+		"Georgia Bold Italic",
+		"Impact",
+		"Lucida Console",
+		"Lucida Sans Unicode",
+		"Marlett",
+		"Minion Web",
+		"Symbol",
+		"Times New Roman",
+		"Times New Roman Bold",
+		"Times New Roman Italic",
+		"Times New Roman Bold Italic",
+		"Tahoma",
+		"Trebuchet MS",
+		"Trebuchet MS Bold",
+		"Trebuchet MS Italic",
+		"Trebuchet MS Bold Italic",
+		"Verdana",
+		"Verdana Bold",
+		"Verdana Italic",
+		"Verdana Bold Italic",
+		"Webdings"
+	],
+	"fontSize": "number",
+	"fontStyle": [
+		"normal",
+		"italic",
+		"oblique"
+	],
+	"fontWeight": [
+		"normal",
+		"bold"
+	],
+	"height": "number",
+	"left": "number",
+	"lineHeight": "number",
+	"opacity": "number",
+	"originX": [
+		"center",
+		"left",
+		"top",
+		"right",
+		"bottom"
+	],
+	"originY": [
+		"center",
+		"left",
+		"top",
+		"right",
+		"bottom"
+	],
+	"scaleX": "number",
+	"scaleY": "number",
+	"shadow": "string",
+	"skewX": "number",
+	"skewY": "number",
+	"stroke": "color",
+	"strokeDashArray": "string",
+	"strokeLineCap": [
+		"butt",
+		"round",
+		"square",
+		"inherit"
+	],
+	"strokeLineJoin": [
+		"miter",
+		"round",
+		"bevel",
+		"inherit"
+	],
+	"strokeMiterLimit": "number",
+	"strokeWidth": "number",
+	"text": "string",
+	"textAlign": [
+		"left",
+		"top",
+		"right",
+		"bottom",
+		"center"
+	],
+	"textBackgroundColor": "color",
+	"textDecoration": [
+		"underline",
+		"overline",
+		"line-through"
+	],
+	"top": "number",
+	"transformMatrix": "string",
+	"type": "cstring",
+	"visible": "boolean",
+	"width": "number",
+	"rx": "number",
+	"ry": "number"
+};
+
+/***/ }),
 /* 68 */,
-/* 69 */
+/* 69 */,
+/* 70 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(29);

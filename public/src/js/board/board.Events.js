@@ -2,6 +2,8 @@ var fabricSettings = require('./../configurations/fabric.configure');
 var socket = require('./../socket').getInstance();
 var util = require('./../Utility/util');
 var UndoRedo = require('./undoRedo');
+var object_json = require('./../object-json/object.json');
+
 
 module.exports = function () {
     var canvas = fabricSettings.getCanvas();
@@ -14,7 +16,7 @@ module.exports = function () {
             console.log("not again");
             return;
         }
-        if(!fabricObject.dustbin)UndoRedo.addObjectInState(JSON.stringify(fabricObject));
+        if (!fabricObject.dustbin) UndoRedo.addObjectInState(JSON.stringify(fabricObject));
         else fabricObject.dustbin = null;
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log('object:added');
@@ -41,7 +43,7 @@ module.exports = function () {
         console.log("Object changed");
         UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
-
+        resetPropertyDialog(e);
     });
 
     socket.on('object:modified', function (rawObject) {
@@ -64,7 +66,7 @@ module.exports = function () {
         console.log(ObjectId);
         sessionStorage.removeItem(ObjectId);
         sessionStorage.getItem(ObjectId);
-        if(!e.target.dustbin)UndoRedo.removeObjectInState(e.target);
+        if (!e.target.dustbin) UndoRedo.removeObjectInState(e.target);
         else e.target.dustbin = null;
 
         socket.emit('object:removed', ObjectId);
@@ -81,4 +83,179 @@ module.exports = function () {
             console.warn('No object found: ', id);
         }
     });
+    canvas.on('object:selected', resetPropertyDialog);
 };
+
+
+
+// function resetPropertyDialog(e) {
+//     var proplist = $('.property-list ul');
+//     var valuelist = $('.value-list ul');
+//     proplist.html('');
+//     valuelist.html('');
+//     var textToInsert = [];
+//     if (e.target.get('fill').length === 6) {
+//         e.target.set('fill', e.target.get('fill') + "0");
+//     }
+//     var selectedObject = e.target.toObject();
+//     for (var prop in selectedObject) {
+//         var propAttr = object_json[prop];
+//         if (propAttr) {
+//             if (propAttr === 'cstring') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="null" readonly disabled=true/></li>'));
+//                 }else{
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>'));
+
+//                 }
+//             }
+//             if (propAttr === 'string') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="null" /></li>'));
+//                 }else{
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="' + e.target.get(prop) + '" /></li>'));
+
+//                 }
+//             }
+//             if (propAttr === 'number') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number" value="0" /></li>'));
+//                 }else{
+
+//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number"  value="' + e.target.get(prop) + '" /></li>'));
+//                 }
+//             }
+//             if (propAttr === 'color') {
+//                 if (!e.target.get(prop)) {
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" />NULL</li>'));
+//                 } else {
+//                     if (e.target.get(prop).length === 6) {
+//                         e.target.set(prop, e.target.get(prop) + "0");
+//                     }
+//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" value="' + e.target.get(prop) + '" /></li>'));
+
+//                 }
+
+//             }
+//             if (propAttr === 'boolean') {
+//                 var obb = propAttr;
+//                 var sell = $('<select  class="objectChanger" data-prop="'+prop+'">');
+//                 var liss = $('<li>');
+//                 valuelist.append(liss);
+//                 liss.append(sell);
+//                 // if( value="'+selectedObject[prop]+'")                    
+//                 if (e.target.get(prop) === true) {
+//                     sell.append($('<option value="true" selected>true</option>'));
+//                     sell.append($('<option value="false">false</option>'));
+//                 } else {
+//                     sell.append($('<option value="true">true</option>'));
+//                     sell.append($('<option value="false" selected>false</option>'));
+//                 }
+//             }
+//             if (typeof propAttr === 'object') {
+//                 var ob = propAttr;
+//                 var sel = $('<select  class="objectChanger" data-prop="'+prop+'">');
+//                 var lis = $('<li>');
+//                 valuelist.append(lis);
+//                 lis.append(sel);
+//                 for (var i = 0; i < ob.length; i++) {
+//                     if (ob[i] === e.target.get(prop)) {
+//                         sel.append($('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>'));
+//                     } else {
+//                         sel.append($('<option value="' + ob[i] + '">' + ob[i] + '</option>'));
+//                     }
+
+//                 }
+//             }
+//             proplist.append($('<li>' + prop + '</li>'));
+//         }
+//     }
+// }
+
+
+
+
+function resetPropertyDialog(e) {
+    var proplist = $('.property-list ul');
+    var valuelist = $('.value-list ul');
+    proplist.html('');
+    valuelist.html('');
+    var textToInsert = [];
+    var propToInsert = [];
+    if (e.target.get('fill').length === 6) {
+        e.target.set('fill', e.target.get('fill') + "0");
+    }
+    var selectedObject = e.target.toObject();
+    for (var prop in selectedObject) {
+        var propAttr = object_json[prop];
+        if (propAttr) {
+            if (propAttr === 'cstring') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" class="cstring" type="text" value="null" readonly disabled=true/></li>');
+                } else {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>');
+
+                }
+            }
+            if (propAttr === 'string') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="text" value="null" /></li>');
+                } else {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="text" value="' + e.target.get(prop) + '" /></li>');
+
+                }
+            }
+            if (propAttr === 'number') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="number" value="0" /></li>');
+                } else {
+
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="number"  value="' + e.target.get(prop) + '" /></li>');
+                }
+            }
+            if (propAttr === 'color') {
+                if (!e.target.get(prop)) {
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="color" />NULL</li>');
+                } else {
+                    if (e.target.get(prop).length === 6) {
+                        e.target.set(prop, e.target.get(prop) + "0");
+                    }
+                    textToInsert.push('<li><input class="objectChanger" data-prop="' + prop + '" type="color" value="' + e.target.get(prop) + '" /></li>');
+
+                }
+
+            }
+            if (propAttr === 'boolean') {
+                var obb = propAttr;
+                textToInsert.push('<li>');
+                textToInsert.push('<select  class="objectChanger" data-prop="' + prop + '">');
+                if (e.target.get(prop) === true) {
+                    textToInsert.push('<option value="true" selected>true</option>');
+                    textToInsert.push('<option value="false">false</option>');
+                } else {
+                    textToInsert.push('<option value="true">true</option>');
+                    textToInsert.push('<option value="false" selected>false</option>');
+                }
+                textToInsert.push('</select>');
+                textToInsert.push('</li>');
+            }
+            if (typeof propAttr === 'object') {
+                var ob = propAttr;
+                textToInsert.push('<li>');
+                textToInsert.push('<select  class="objectChanger" data-prop="' + prop + '">');
+                for (var i = 0; i < ob.length; i++) {
+                    if (ob[i] === e.target.get(prop)) {
+                        textToInsert.push('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>');
+                    } else {
+                        textToInsert.push('<option value="' + ob[i] + '">' + ob[i] + '</option>');
+                    }
+                }
+                textToInsert.push('</select>');
+                textToInsert.push('</li>');
+            }
+            propToInsert.push('<li>' + prop + '</li>');
+        }
+    }
+    proplist.append(propToInsert.join(''));
+    valuelist.append(textToInsert.join(''));    
+}

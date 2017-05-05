@@ -64,16 +64,17 @@
        var ui_delete = $('.ui_extra_delete');
 
 
-
+       var proplist = $('.property-list ul');
+       var valuelist = $('.value-list ul');
        /**
         * Required to reset all unused events
         */
 
-/**
- * 
- * These buttons are disabled until we create features for them.
- */
-        ui_redo.addClass('li-disabled');
+       /**
+        * 
+        * These buttons are disabled until we create features for them.
+        */
+       ui_redo.addClass('li-disabled');
 
 
 
@@ -91,7 +92,7 @@
            canvas.on('mouse:down', function (e) {
                features.createText({
                    fontFamily: 'arial black',
-                   fill: '#00000',
+                   fill: '#000000',
                    left: canvas.getPointer(e.e).x,
                    top: canvas.getPointer(e.e).y,
                    width: 50,
@@ -123,8 +124,8 @@
                    originX: 'center',
                    originY: 'center',
                    radius: 30,
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('circle added');
@@ -148,8 +149,8 @@
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('square added');
@@ -174,8 +175,8 @@
                    height: 50,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    borderRadius: 2
                }, function (err, object) {
@@ -200,9 +201,9 @@
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
+                   fill: '#ffffff',
                    strokeWidth: 2,
-                   stroke: '#000'
+                   stroke: '#000000'
                }, function (err, object) {
                    console.log('triangle added');
                    canvas.add(object);
@@ -226,8 +227,8 @@
                    height: 100,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    rx: 10,
                    ry: 10
@@ -251,8 +252,8 @@
                    top: canvas.getPointer(e.e).y,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('star added');
@@ -274,8 +275,8 @@
                    top: canvas.getPointer(e.e).y,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2
                }, function (err, object) {
                    console.log('hexagon added');
@@ -300,8 +301,8 @@
                    angle: 45,
                    originX: 'center',
                    originY: 'center',
-                   fill: 'white',
-                   stroke: '#000',
+                   fill: '#ffffff',
+                   stroke: '#000000',
                    strokeWidth: 2,
                    borderRadius: 2
                }, function (err, object) {
@@ -363,43 +364,43 @@
        });
 
        ui_redo.on('click', function (evt) {
-        //    var poppedObject = undoRedo.redo();
-        //    if (!poppedObject) {
-        //        console.log('Nothing more to redo!');
-        //        return;
-        //    }
-        //    if (poppedObject.action === 'add') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        fabricObjects = canvas.getObjects();
-        //        for (i = 0; i < fabricObjects.length; i++) {
-        //            if (fabricObjects[i]._id === poppedObject._id) {
-        //                fabricObjects[i].dustbin = true;
-        //                canvas.remove(fabricObjects[i]);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    if (poppedObject.action === 'modify') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        fabricObjects = canvas.getObjects();
-        //        for (i = 0; i < fabricObjects.length; i++) {
-        //            if (fabricObjects[i]._id === poppedObject._id) {
-        //                fabricObjects[i].set(poppedObject);
-        //                canvas.renderAll();
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    if (poppedObject.action === 'remove') {
-        //        poppedObject = JSON.parse(poppedObject.object);
-        //        poppedObject.dustbin = true;
-        //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
-        //            fabricObjects.forEach(function (fabricObject) {
-        //                canvas.add(fabricObject);
-        //                canvas.renderAll();
-        //            });
-        //        });
-        //    }
+           //    var poppedObject = undoRedo.redo();
+           //    if (!poppedObject) {
+           //        console.log('Nothing more to redo!');
+           //        return;
+           //    }
+           //    if (poppedObject.action === 'add') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        fabricObjects = canvas.getObjects();
+           //        for (i = 0; i < fabricObjects.length; i++) {
+           //            if (fabricObjects[i]._id === poppedObject._id) {
+           //                fabricObjects[i].dustbin = true;
+           //                canvas.remove(fabricObjects[i]);
+           //                break;
+           //            }
+           //        }
+           //    }
+           //    if (poppedObject.action === 'modify') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        fabricObjects = canvas.getObjects();
+           //        for (i = 0; i < fabricObjects.length; i++) {
+           //            if (fabricObjects[i]._id === poppedObject._id) {
+           //                fabricObjects[i].set(poppedObject);
+           //                canvas.renderAll();
+           //                break;
+           //            }
+           //        }
+           //    }
+           //    if (poppedObject.action === 'remove') {
+           //        poppedObject = JSON.parse(poppedObject.object);
+           //        poppedObject.dustbin = true;
+           //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
+           //            fabricObjects.forEach(function (fabricObject) {
+           //                canvas.add(fabricObject);
+           //                canvas.renderAll();
+           //            });
+           //        });
+           //    }
        });
 
        ui_delete.on('click', function (evt) {
@@ -439,6 +440,28 @@
                canvas.renderAll();
            }
        });
+
+
+
+
+       $(valuelist).on('change', function (evt) {
+           if ($(evt.target).is('.objectChanger')) {
+               var changedVal = $(evt.target).val();
+               var prop = $(evt.target).data('prop');
+               var selectedObject = canvas.getActiveObject();
+               console.log(prop, changedVal);
+               selectedObject.set(prop, changedVal);
+               canvas.renderAll();
+           }
+
+       });
+
+
+
+
+
+
+
 
 
    };
