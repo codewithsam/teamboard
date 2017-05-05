@@ -166,61 +166,109 @@
 </div>
 <canvas id="canvas" width="1500" height="1500"></canvas>
 
+<div class="sidebar-toggler">
+        <button class="options-button-opener"><span>Properties</span></button>
+    </div>
 
-
-<div class="sidebar-options sidebar-property-close">
-    <div class="sidebar-options-wrapper">
-        <button class="options-button-opener">
-            <span>Properties</span>
-        </button>
-
-        <div id="split-pane-1" class="split-pane fixed-left">
-            <div id="left-component" class="split-pane-component">
-                <div class="left-component-wrapper">
-                    <div class="property-header property-property">
-                    Property
+{{!--<div class="sidebar sidebar-property-close">--}}
+    {{!--<button class="options-button-opener"><span>Properties</span></button>--}}
+    <div class="sidebar-options sidebar-property-close">
+    
+        
+        <div class="sidebar-options-wrapper">
+            <div id="split-pane-1" class="split-pane fixed-left">
+                <div id="left-component" class="split-pane-component">
+                    <div class="left-component-wrapper">
+                        <div class="property-header property-property">
+                            Property
+                        </div>
+                        <div class="property-list">
+                            <ul></ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="property-list">
-                    <ul>
-                        <!--<li>Prop One</li>
-                        <li>Prop two</li>
-                        <li>Prop three</li>
-                        <li>Prop four</li>
-                        <li>Prop five</li>
-                        <li>Prop six</li>
-                        <li>Prop seven</li>
-                        <li>Prop eight</li>
-                        <li>Prop One</li>
-                        <li>Prop two</li>
-                        <li>Prop three</li>
-                        <li>Prop four</li>
-                        <li>Prop five</li>
-                        <li>Prop six</li>
-                        <li>Prop seven</li>
-                        <li>Prop eight</li>
-                        <li>Prop One</li>
-                        <li>Prop two</li>
-                        <li>Prop three</li>
-                        <li>Prop four</li>
-                        <li>Prop five</li>
-                        <li>Prop six</li>
-                        <li>Prop seven</li>
-                        <li>Prop eight</li>-->
-                    </ul>
-                </div>
+                <div id="my-divider" class="split-pane-divider"></div>
+                <div id="right-component" class="split-pane-component">
+                    <div class="right-component-wrapper">
+                        <div class="property-header property-value">
+                            Value
+                        </div>
+                        <div class="property-value">
+                        </div>
+                        <div class="value-list">
+                            <ul></ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="my-divider" class="split-pane-divider"></div>
-            <div id="right-component" class="split-pane-component">
-                <div class="right-component-wrapper">
-                    <div class="property-header property-value">
-                    Value
+
+        </div>
+    </div>
+{{!--</div>--}}
+
+
+
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content member-add-share-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Enter New Team Member</h4>
+            </div>
+            <div class="modal-body">
+                <input type="search" data-boardid="{{boardid}}" class="form-control mememail" name="mememail" placeholder="Enter Email Of Team Member">
+                <div class="added-members">
+                    {{!--<span class="badge member-email">Sanyam Singh (sam@gmail.com) <i class="fa fa-times-circle"></i></span>--}}
                 </div>
-                <div class="property-value">
+                <div>
+
+                    <button data-boardid="{{boardid}}" class="btn btn-default pull-right sendTeamNames">Save</button>
                 </div>
-                <div class="value-list">
-                    <ul>
-                        <!--<li><input type="number" /></li>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<link rel="stylesheet" href="/dist/bower_components/split-pane/split-pane.css">
+
+<script>
+    (function () {
+        $(document).ready(function () {
+            $('html, body').css({
+                overflow: 'hidden',
+                height: '100%'
+            });
+        });
+    })();
+
+</script>
+<script>
+    window._globalBoardData = JSON.parse('{{{teams}}}');
+
+</script>
+<script src="/dist/bower_components/fabric.js/dist/fabric.js"></script>
+<script src="/dist/js/_partials.bundle.js"></script>
+<script src="/dist/bower_components/split-pane/split-pane.js"></script>
+<script src="/dist/js/app.bundle.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<li><input type="number" /></li>
                         <li>
                             <select>
                                 <option value="option 1">option 1</option>
@@ -289,58 +337,3 @@
                             <input type="color" name="favcolor" value="#ff0000">
                         </li>
                         <li><input type="file"></li>-->
-                    </ul>
-                </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<div class="modal fade" id="shareModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content member-add-share-modal">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Enter New Team Member</h4>
-            </div>
-            <div class="modal-body">
-                <input type="search" data-boardid="{{boardid}}" class="form-control mememail" name="mememail" placeholder="Enter Email Of Team Member">
-                <div class="added-members">
-                    {{!--<span class="badge member-email">Sanyam Singh (sam@gmail.com) <i class="fa fa-times-circle"></i></span>--}}
-                </div>
-                <div>
-
-                    <button data-boardid="{{boardid}}" class="btn btn-default pull-right sendTeamNames">Save</button>
-                </div>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<link rel="stylesheet" href="/dist/bower_components/split-pane/split-pane.css">
-
-<script>
-    (function () {
-        $(document).ready(function () {
-            $('html, body').css({
-                overflow: 'hidden',
-                height: '100%'
-            });
-        });
-    })();
-</script>
-<script>
-    window._globalBoardData = JSON.parse('{{{teams}}}');
-</script>
-<script src="/dist/bower_components/fabric.js/dist/fabric.js"></script>
-<script src="/dist/js/_partials.bundle.js"></script>
-<script src="/dist/bower_components/split-pane/split-pane.js"></script>
-<script src="/dist/js/app.bundle.js"></script>

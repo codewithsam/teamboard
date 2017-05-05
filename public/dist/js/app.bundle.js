@@ -9159,7 +9159,7 @@ module.exports = function () {
         console.log("Object changed");
         UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
-        resetPropertyDialog(e);
+        // resetPropertyDialog(e);
     });
 
     socket.on('object:modified', function (rawObject) {
@@ -9199,7 +9199,20 @@ module.exports = function () {
             console.warn('No object found: ', id);
         }
     });
+
     canvas.on('object:selected', resetPropertyDialog);
+    canvas.on('selection:cleared', function (e) {
+        // console.log(e);
+        // if (e.e.target) {
+            console.log('asds');
+            var proplist = $('.property-list ul');
+            var valuelist = $('.value-list ul');
+            proplist.html('');
+            valuelist.html('');
+            var textToInsert = [];
+            var propToInsert = [];
+        // }
+    });
 };
 
 
@@ -9373,7 +9386,7 @@ function resetPropertyDialog(e) {
         }
     }
     proplist.append(propToInsert.join(''));
-    valuelist.append(textToInsert.join(''));    
+    valuelist.append(textToInsert.join(''));
 }
 
 /***/ }),
