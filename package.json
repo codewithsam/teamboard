@@ -41,6 +41,7 @@
     "passport-local": "^1.0.0",
     "passport.socketio": "^3.7.0",
     "socket.io": "^1.7.3",
+    "url-to-image": "^1.0.0",
     "webpack": "^2.4.1"
   },
   "devDependencies": {

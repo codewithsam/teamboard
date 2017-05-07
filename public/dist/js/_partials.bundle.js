@@ -208,7 +208,7 @@ $(document).ready(function () {
             //hide
             flag = false;
             $('.sidebar-options').stop(true).animate({
-                right: -$('.sidebar-options').width()-5
+                right: -$('.sidebar-options').width() - 5
             });
             $(this).animate({
                 right: 0
@@ -223,7 +223,20 @@ $(document).ready(function () {
     // $('#right-component').on('scroll', function () {
     //     $('#left-component').scrollTop($('#right-component').scrollTop());
     // });
+
+
+    $('.capture-icons').on('click', function (evt) {
+        $(this).children().siblings().children().removeClass('active');
+        $(evt.target).addClass('active');
+    });
+
+
+
+
 });
+
+
+//Fabric.js - line: 11900
 
 /***/ }),
 

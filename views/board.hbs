@@ -54,7 +54,7 @@
             <ul class="dropdown-menu menu-right additional-features">
                 <li class="ui-btn-upload"><i class="flaticon-up-arrow"></i><span>Upload</span></li>
                 <li class="ui-btn-from-url"><i class="flaticon-link"></i><span>From URL</span></li>
-                <li class="ui-btn-capture" class="img-based"><img src="/img/camera.png" alt=""><span>Capture Webpage</span></li>
+                <li class="ui-btn-capture" class="img-based" data-toggle="modal" data-target="#webshotModal"><img src="/img/camera.png" alt=""><span>Capture Webpage</span></li>
                 <li class="ui-btn-dropbox" class="img-based"><img src="/img/dropbox.png" alt=""><span>Link Dropbox</span></li>
                 <li class="ui-btn-gdrive" class="img-based"><img src="/img/drive.png" alt=""><span>Link Google Drive</span></li>
             </ul>
@@ -167,14 +167,15 @@
 <canvas id="canvas" width="1500" height="1500"></canvas>
 
 <div class="sidebar-toggler">
-        <button class="options-button-opener"><span>Properties</span></button>
-    </div>
+    <button class="options-button-opener"><span>Properties</span></button>
+</div>
 
-{{!--<div class="sidebar sidebar-property-close">--}}
-    {{!--<button class="options-button-opener"><span>Properties</span></button>--}}
+{{!--
+<div class="sidebar sidebar-property-close">--}} {{!--
+    <button class="options-button-opener"><span>Properties</span></button>--}}
     <div class="sidebar-options sidebar-property-close">
-    
-        
+
+
         <div class="sidebar-options-wrapper">
             <div id="split-pane-1" class="split-pane fixed-left">
                 <div id="left-component" class="split-pane-component">
@@ -204,7 +205,7 @@
 
         </div>
     </div>
-{{!--</div>--}}
+    {{!--</div>--}}
 
 
 
@@ -226,11 +227,51 @@
                 </div>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+
+{{!-- Capture webpage Modal--}}
+<div class="modal" id="webshotModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content webshot-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Enter URL to capture</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" id="webshoturl" placeholder="http://www">
+                    </div>
+                </div>
+                <div class="row capture-icons">
+                    <div class="col-xs-4">
+                        <img data-width="1366" data-height="768" src="/img/notebook-computer.png" alt="">
+                        <span>1366x768</span>
+                    </div>
+                    <div class="col-xs-4">
+                       <img data-width="800" data-height="400" src="/img/ipad.png" alt="">
+                        <span>800x480</span>                       
+                    </div>
+                    <div class="col-xs-4">
+                        <img data-width="360" data-height="640" src="/img/smartphone.png" alt="">
+                        <span>360x640</span>                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default capture-webshot">Capture</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loader-out"><div id="loader"></div></div>
+
+
+
+
+
 
 <link rel="stylesheet" href="/dist/bower_components/split-pane/split-pane.css">
 

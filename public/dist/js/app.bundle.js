@@ -1954,6 +1954,17 @@ module.exports.getObjectById = function (c, id) {
     return object;
 }
 
+module.exports.showLoader = function () {
+    $('#loader-out').css({
+        display: 'block'
+    });
+}
+module.exports.hideLoader = function () {
+    $('#loader-out').css({
+        display: 'none'
+    });
+}
+
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
@@ -9008,7 +9019,7 @@ module.exports.initialize = function (c) {
     });
 };
 
-function addBaseProperties(o){
+function addBaseProperties(o) {
     o._id = util.guid();
     o.remote = false;
 }
@@ -9110,6 +9121,20 @@ module.exports.createHexagon = function (o, cb) {
     cb(null, obj);
 };
 
+module.exports.createImage = function (o, cb) {
+    var options = o || {};
+    if (!options.url) {
+        cb("url is required to create an image",null);
+    }
+    fabric.Image.fromURL(options.url, function (obj) {
+        obj.set('left', options.left);
+        obj.set('top', options.top);
+        canvas.trigger('set:scale', obj);
+        addBaseProperties(obj);
+        cb(null, obj);
+    });
+};
+
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -9159,7 +9184,7 @@ module.exports = function () {
         console.log("Object changed");
         UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
-        // resetPropertyDialog(e);
+        resetPropertyDialog(e);
     });
 
     socket.on('object:modified', function (rawObject) {
@@ -9202,106 +9227,14 @@ module.exports = function () {
 
     canvas.on('object:selected', resetPropertyDialog);
     canvas.on('selection:cleared', function (e) {
-        // console.log(e);
-        // if (e.e.target) {
-            console.log('asds');
             var proplist = $('.property-list ul');
             var valuelist = $('.value-list ul');
             proplist.html('');
             valuelist.html('');
             var textToInsert = [];
             var propToInsert = [];
-        // }
     });
 };
-
-
-
-// function resetPropertyDialog(e) {
-//     var proplist = $('.property-list ul');
-//     var valuelist = $('.value-list ul');
-//     proplist.html('');
-//     valuelist.html('');
-//     var textToInsert = [];
-//     if (e.target.get('fill').length === 6) {
-//         e.target.set('fill', e.target.get('fill') + "0");
-//     }
-//     var selectedObject = e.target.toObject();
-//     for (var prop in selectedObject) {
-//         var propAttr = object_json[prop];
-//         if (propAttr) {
-//             if (propAttr === 'cstring') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="null" readonly disabled=true/></li>'));
-//                 }else{
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>'));
-
-//                 }
-//             }
-//             if (propAttr === 'string') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="null" /></li>'));
-//                 }else{
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="' + e.target.get(prop) + '" /></li>'));
-
-//                 }
-//             }
-//             if (propAttr === 'number') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number" value="0" /></li>'));
-//                 }else{
-
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number"  value="' + e.target.get(prop) + '" /></li>'));
-//                 }
-//             }
-//             if (propAttr === 'color') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" />NULL</li>'));
-//                 } else {
-//                     if (e.target.get(prop).length === 6) {
-//                         e.target.set(prop, e.target.get(prop) + "0");
-//                     }
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" value="' + e.target.get(prop) + '" /></li>'));
-
-//                 }
-
-//             }
-//             if (propAttr === 'boolean') {
-//                 var obb = propAttr;
-//                 var sell = $('<select  class="objectChanger" data-prop="'+prop+'">');
-//                 var liss = $('<li>');
-//                 valuelist.append(liss);
-//                 liss.append(sell);
-//                 // if( value="'+selectedObject[prop]+'")                    
-//                 if (e.target.get(prop) === true) {
-//                     sell.append($('<option value="true" selected>true</option>'));
-//                     sell.append($('<option value="false">false</option>'));
-//                 } else {
-//                     sell.append($('<option value="true">true</option>'));
-//                     sell.append($('<option value="false" selected>false</option>'));
-//                 }
-//             }
-//             if (typeof propAttr === 'object') {
-//                 var ob = propAttr;
-//                 var sel = $('<select  class="objectChanger" data-prop="'+prop+'">');
-//                 var lis = $('<li>');
-//                 valuelist.append(lis);
-//                 lis.append(sel);
-//                 for (var i = 0; i < ob.length; i++) {
-//                     if (ob[i] === e.target.get(prop)) {
-//                         sel.append($('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>'));
-//                     } else {
-//                         sel.append($('<option value="' + ob[i] + '">' + ob[i] + '</option>'));
-//                     }
-
-//                 }
-//             }
-//             proplist.append($('<li>' + prop + '</li>'));
-//         }
-//     }
-// }
-
-
 
 
 function resetPropertyDialog(e) {
@@ -9316,6 +9249,7 @@ function resetPropertyDialog(e) {
     }
     var selectedObject = e.target.toObject();
     for (var prop in selectedObject) {
+        // console.log(prop,selectedObject[prop]);
         var propAttr = object_json[prop];
         if (propAttr) {
             if (propAttr === 'cstring') {
@@ -9396,6 +9330,7 @@ function resetPropertyDialog(e) {
    var fabricSettings = __webpack_require__(12);
    var features = __webpack_require__(62);
    var undoRedo = __webpack_require__(27);
+   var util = __webpack_require__(11);
 
    module.exports = function () {
        var canvas = fabricSettings.getCanvas();
@@ -9759,43 +9694,7 @@ function resetPropertyDialog(e) {
        });
 
        ui_redo.on('click', function (evt) {
-           //    var poppedObject = undoRedo.redo();
-           //    if (!poppedObject) {
-           //        console.log('Nothing more to redo!');
-           //        return;
-           //    }
-           //    if (poppedObject.action === 'add') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        fabricObjects = canvas.getObjects();
-           //        for (i = 0; i < fabricObjects.length; i++) {
-           //            if (fabricObjects[i]._id === poppedObject._id) {
-           //                fabricObjects[i].dustbin = true;
-           //                canvas.remove(fabricObjects[i]);
-           //                break;
-           //            }
-           //        }
-           //    }
-           //    if (poppedObject.action === 'modify') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        fabricObjects = canvas.getObjects();
-           //        for (i = 0; i < fabricObjects.length; i++) {
-           //            if (fabricObjects[i]._id === poppedObject._id) {
-           //                fabricObjects[i].set(poppedObject);
-           //                canvas.renderAll();
-           //                break;
-           //            }
-           //        }
-           //    }
-           //    if (poppedObject.action === 'remove') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        poppedObject.dustbin = true;
-           //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
-           //            fabricObjects.forEach(function (fabricObject) {
-           //                canvas.add(fabricObject);
-           //                canvas.renderAll();
-           //            });
-           //        });
-           //    }
+
        });
 
        ui_delete.on('click', function (evt) {
@@ -9806,6 +9705,53 @@ function resetPropertyDialog(e) {
        });
 
 
+       $('.capture-webshot').on('click', function () {
+           var uri = $('#webshoturl').val();
+           if (!uri) return;
+           var screenSize = $('.capture-icons').children().find('img.active');
+           var width, height;
+           if (!screenSize) {
+               width = 1366;
+               height = 768;
+           } else {
+               width = screenSize.data('width');
+               height = screenSize.data('height');
+           }
+           util.showLoader();
+
+           $.ajax({
+               url: '/upload/webshot',
+               type: 'POST',
+               data: {
+                   url: uri,
+                   width: width,
+                   height: height
+               },
+               dataType: 'json',
+               success: function (response) {
+                   var winwidth = $(window).width()/2;
+                   var winheight = $(window).height()/2;
+                   util.hideLoader();
+                   features.createImage({
+                       url: "/img/webshot/" + response + ".png",
+                       left: winwidth,
+                       top: winheight
+                   }, function (err, object) {
+                       if (err) console.log(err);
+                       else {
+                           console.log('image added');
+                           canvas.add(object);
+                           $('#webshotModal').modal('hide');
+                       }
+                   });
+               },
+               error: function (xhr, status, error) {
+                   console.log(error);
+                    util.hideLoader();
+               }
+           });
+
+       });
 
 
 
@@ -9844,9 +9790,15 @@ function resetPropertyDialog(e) {
                var changedVal = $(evt.target).val();
                var prop = $(evt.target).data('prop');
                var selectedObject = canvas.getActiveObject();
+               console.log(selectedObject._id);
                console.log(prop, changedVal);
                selectedObject.set(prop, changedVal);
+               console.log(prop, changedVal);
                canvas.renderAll();
+               selectedObject.setCoords();
+               canvas.trigger('object:modified', {
+                   target: selectedObject
+               });
            }
 
        });

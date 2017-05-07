@@ -43,7 +43,7 @@ module.exports = function () {
         console.log("Object changed");
         UndoRedo.modifyObjectInState(JSON.stringify(fabricObject));
         socket.emit('object:modified', fabricObject);
-        // resetPropertyDialog(e);
+        resetPropertyDialog(e);
     });
 
     socket.on('object:modified', function (rawObject) {
@@ -86,106 +86,14 @@ module.exports = function () {
 
     canvas.on('object:selected', resetPropertyDialog);
     canvas.on('selection:cleared', function (e) {
-        // console.log(e);
-        // if (e.e.target) {
-            console.log('asds');
             var proplist = $('.property-list ul');
             var valuelist = $('.value-list ul');
             proplist.html('');
             valuelist.html('');
             var textToInsert = [];
             var propToInsert = [];
-        // }
     });
 };
-
-
-
-// function resetPropertyDialog(e) {
-//     var proplist = $('.property-list ul');
-//     var valuelist = $('.value-list ul');
-//     proplist.html('');
-//     valuelist.html('');
-//     var textToInsert = [];
-//     if (e.target.get('fill').length === 6) {
-//         e.target.set('fill', e.target.get('fill') + "0");
-//     }
-//     var selectedObject = e.target.toObject();
-//     for (var prop in selectedObject) {
-//         var propAttr = object_json[prop];
-//         if (propAttr) {
-//             if (propAttr === 'cstring') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="null" readonly disabled=true/></li>'));
-//                 }else{
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" class="cstring" type="text" value="' + e.target.get(prop) + '" readonly disabled=true/></li>'));
-
-//                 }
-//             }
-//             if (propAttr === 'string') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="null" /></li>'));
-//                 }else{
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="text" value="' + e.target.get(prop) + '" /></li>'));
-
-//                 }
-//             }
-//             if (propAttr === 'number') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number" value="0" /></li>'));
-//                 }else{
-
-//                 valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="number"  value="' + e.target.get(prop) + '" /></li>'));
-//                 }
-//             }
-//             if (propAttr === 'color') {
-//                 if (!e.target.get(prop)) {
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" />NULL</li>'));
-//                 } else {
-//                     if (e.target.get(prop).length === 6) {
-//                         e.target.set(prop, e.target.get(prop) + "0");
-//                     }
-//                     valuelist.append($('<li><input class="objectChanger" data-prop="'+prop+'" type="color" value="' + e.target.get(prop) + '" /></li>'));
-
-//                 }
-
-//             }
-//             if (propAttr === 'boolean') {
-//                 var obb = propAttr;
-//                 var sell = $('<select  class="objectChanger" data-prop="'+prop+'">');
-//                 var liss = $('<li>');
-//                 valuelist.append(liss);
-//                 liss.append(sell);
-//                 // if( value="'+selectedObject[prop]+'")                    
-//                 if (e.target.get(prop) === true) {
-//                     sell.append($('<option value="true" selected>true</option>'));
-//                     sell.append($('<option value="false">false</option>'));
-//                 } else {
-//                     sell.append($('<option value="true">true</option>'));
-//                     sell.append($('<option value="false" selected>false</option>'));
-//                 }
-//             }
-//             if (typeof propAttr === 'object') {
-//                 var ob = propAttr;
-//                 var sel = $('<select  class="objectChanger" data-prop="'+prop+'">');
-//                 var lis = $('<li>');
-//                 valuelist.append(lis);
-//                 lis.append(sel);
-//                 for (var i = 0; i < ob.length; i++) {
-//                     if (ob[i] === e.target.get(prop)) {
-//                         sel.append($('<option value="' + ob[i] + '" selected>' + ob[i] + '</option>'));
-//                     } else {
-//                         sel.append($('<option value="' + ob[i] + '">' + ob[i] + '</option>'));
-//                     }
-
-//                 }
-//             }
-//             proplist.append($('<li>' + prop + '</li>'));
-//         }
-//     }
-// }
-
-
 
 
 function resetPropertyDialog(e) {
@@ -200,6 +108,7 @@ function resetPropertyDialog(e) {
     }
     var selectedObject = e.target.toObject();
     for (var prop in selectedObject) {
+        // console.log(prop,selectedObject[prop]);
         var propAttr = object_json[prop];
         if (propAttr) {
             if (propAttr === 'cstring') {

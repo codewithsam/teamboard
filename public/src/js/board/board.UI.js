@@ -1,6 +1,7 @@
    var fabricSettings = require('./../configurations/fabric.configure');
    var features = require('./Features');
    var undoRedo = require('./undoRedo');
+   var util = require('./../Utility/util');
 
    module.exports = function () {
        var canvas = fabricSettings.getCanvas();
@@ -364,43 +365,7 @@
        });
 
        ui_redo.on('click', function (evt) {
-           //    var poppedObject = undoRedo.redo();
-           //    if (!poppedObject) {
-           //        console.log('Nothing more to redo!');
-           //        return;
-           //    }
-           //    if (poppedObject.action === 'add') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        fabricObjects = canvas.getObjects();
-           //        for (i = 0; i < fabricObjects.length; i++) {
-           //            if (fabricObjects[i]._id === poppedObject._id) {
-           //                fabricObjects[i].dustbin = true;
-           //                canvas.remove(fabricObjects[i]);
-           //                break;
-           //            }
-           //        }
-           //    }
-           //    if (poppedObject.action === 'modify') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        fabricObjects = canvas.getObjects();
-           //        for (i = 0; i < fabricObjects.length; i++) {
-           //            if (fabricObjects[i]._id === poppedObject._id) {
-           //                fabricObjects[i].set(poppedObject);
-           //                canvas.renderAll();
-           //                break;
-           //            }
-           //        }
-           //    }
-           //    if (poppedObject.action === 'remove') {
-           //        poppedObject = JSON.parse(poppedObject.object);
-           //        poppedObject.dustbin = true;
-           //        fabric.util.enlivenObjects([poppedObject], function (fabricObjects) {
-           //            fabricObjects.forEach(function (fabricObject) {
-           //                canvas.add(fabricObject);
-           //                canvas.renderAll();
-           //            });
-           //        });
-           //    }
+
        });
 
        ui_delete.on('click', function (evt) {
@@ -411,6 +376,53 @@
        });
 
 
+       $('.capture-webshot').on('click', function () {
+           var uri = $('#webshoturl').val();
+           if (!uri) return;
+           var screenSize = $('.capture-icons').children().find('img.active');
+           var width, height;
+           if (!screenSize) {
+               width = 1366;
+               height = 768;
+           } else {
+               width = screenSize.data('width');
+               height = screenSize.data('height');
+           }
+           util.showLoader();
+
+           $.ajax({
+               url: '/upload/webshot',
+               type: 'POST',
+               data: {
+                   url: uri,
+                   width: width,
+                   height: height
+               },
+               dataType: 'json',
+               success: function (response) {
+                   var winwidth = $(window).width()/2;
+                   var winheight = $(window).height()/2;
+                   util.hideLoader();
+                   features.createImage({
+                       url: "/img/webshot/" + response + ".png",
+                       left: winwidth,
+                       top: winheight
+                   }, function (err, object) {
+                       if (err) console.log(err);
+                       else {
+                           console.log('image added');
+                           canvas.add(object);
+                           $('#webshotModal').modal('hide');
+                       }
+                   });
+               },
+               error: function (xhr, status, error) {
+                   console.log(error);
+                    util.hideLoader();
+               }
+           });
+
+       });
 
 
 
@@ -449,9 +461,15 @@
                var changedVal = $(evt.target).val();
                var prop = $(evt.target).data('prop');
                var selectedObject = canvas.getActiveObject();
+               console.log(selectedObject._id);
                console.log(prop, changedVal);
                selectedObject.set(prop, changedVal);
+               console.log(prop, changedVal);
                canvas.renderAll();
+               selectedObject.setCoords();
+               canvas.trigger('object:modified', {
+                   target: selectedObject
+               });
            }
 
        });

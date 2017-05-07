@@ -27,7 +27,7 @@ module.exports.initialize = function (c) {
     });
 };
 
-function addBaseProperties(o){
+function addBaseProperties(o) {
     o._id = util.guid();
     o.remote = false;
 }
@@ -127,4 +127,18 @@ module.exports.createHexagon = function (o, cb) {
     canvas.trigger('set:scale', obj);
     addBaseProperties(obj);
     cb(null, obj);
+};
+
+module.exports.createImage = function (o, cb) {
+    var options = o || {};
+    if (!options.url) {
+        cb("url is required to create an image",null);
+    }
+    fabric.Image.fromURL(options.url, function (obj) {
+        obj.set('left', options.left);
+        obj.set('top', options.top);
+        canvas.trigger('set:scale', obj);
+        addBaseProperties(obj);
+        cb(null, obj);
+    });
 };

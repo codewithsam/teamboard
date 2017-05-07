@@ -20,3 +20,14 @@ module.exports.getObjectById = function (c, id) {
     }
     return object;
 }
+
+module.exports.showLoader = function () {
+    $('#loader-out').css({
+        display: 'block'
+    });
+}
+module.exports.hideLoader = function () {
+    $('#loader-out').css({
+        display: 'none'
+    });
+}
