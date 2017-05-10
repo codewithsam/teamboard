@@ -52,7 +52,7 @@
                 <i class="fa fa-plus"></i>
             </div>
             <ul class="dropdown-menu menu-right additional-features">
-                <li class="ui-btn-upload"><i class="flaticon-up-arrow"></i><span>Upload</span></li>
+                <li class="ui-btn-upload" data-toggle="modal" data-target="#imgUploadModal"><i class="flaticon-up-arrow"></i><span>Upload</span></li>
                 <li class="ui-btn-from-url"><i class="flaticon-link"></i><span>From URL</span></li>
                 <li class="ui-btn-capture" class="img-based" data-toggle="modal" data-target="#webshotModal"><img src="/img/camera.png" alt=""><span>Capture Webpage</span></li>
                 <li class="ui-btn-dropbox" class="img-based"><img src="/img/dropbox.png" alt=""><span>Link Dropbox</span></li>
@@ -250,12 +250,12 @@
                         <span>1366x768</span>
                     </div>
                     <div class="col-xs-4">
-                       <img data-width="800" data-height="400" src="/img/ipad.png" alt="">
-                        <span>800x480</span>                       
+                        <img data-width="800" data-height="400" src="/img/ipad.png" alt="">
+                        <span>800x480</span>
                     </div>
                     <div class="col-xs-4">
                         <img data-width="360" data-height="640" src="/img/smartphone.png" alt="">
-                        <span>360x640</span>                        
+                        <span>360x640</span>
                     </div>
                 </div>
             </div>
@@ -266,7 +266,44 @@
     </div>
 </div>
 
-<div id="loader-out"><div id="loader"></div></div>
+
+
+
+
+<div class="modal fade" id="imgUploadModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Upload Files</h4>
+            </div>
+            <form class="image-uploader" action="/upload/image" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="file" name="imagepath" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default capture-webshot">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div id="loader-out">
+    <div id="loader"></div>
+</div>
 
 
 

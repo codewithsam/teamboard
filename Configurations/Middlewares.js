@@ -8,12 +8,44 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
+const multer = require('multer');
+const utils = require('./../modules/utils');
+
+
 
 module.exports = function (app, io) {
     // Body parser middleware for Forms
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+
+    // Use multer for File uploading as Body parser does not support multipart-form-data
+
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, __dirname + '/../public/img/uploads');
+        },
+        filename: function (req, file, cb) {
+            if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
+                var err = new Error();
+                err.code = 'filetype';
+                return cb(err);
+            } else {
+                console.log(file);
+                var filename = utils.guid();
+                if(file.mimetype === 'image/png') filename+='.png';
+                if(file.mimetype === 'image/jpg') filename+='.jpg';
+                if(file.mimetype === 'image/jpeg') filename+='.jpeg';
+                
+                cb(null, filename);
+            }
+        }
+    });
+    var upload = multer({
+        storage: storage
+    });
+
+    app.set('multerLoader', upload);
 
     //cookie middleware
     app.use(cookieParser());

@@ -1260,6 +1260,44 @@ function localstorage(){
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + s4() + s4() +
+        s4() + s4();
+}
+
+module.exports.guid = guid;
+module.exports.getObjectById = function (c, id) {
+    var object = null;
+    var objects = c.getObjects();
+    for (var i = 0, len = c.size(); i < len; i++) {
+        if (objects[i]._id && objects[i]._id === id) {
+            object = objects[i]
+            break;
+        }
+    }
+    return object;
+}
+
+module.exports.showLoader = function () {
+    $('#loader-out').css({
+        display: 'block'
+    });
+}
+module.exports.hideLoader = function () {
+    $('#loader-out').css({
+        display: 'none'
+    });
+}
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1422,7 +1460,7 @@ Transport.prototype.onClose = function () {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {// browser shim for xmlhttprequest module
@@ -1466,7 +1504,7 @@ module.exports = function (opts) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = Array.isArray || function (arr) {
@@ -1475,7 +1513,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 /**
@@ -1518,7 +1556,7 @@ exports.decode = function(qs){
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -1928,44 +1966,6 @@ function error(data){
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + s4() + s4() +
-        s4() + s4();
-}
-
-module.exports.guid = guid;
-module.exports.getObjectById = function (c, id) {
-    var object = null;
-    var objects = c.getObjects();
-    for (var i = 0, len = c.size(); i < len; i++) {
-        if (objects[i]._id && objects[i]._id === id) {
-            object = objects[i]
-            break;
-        }
-    }
-    return object;
-}
-
-module.exports.showLoader = function () {
-    $('#loader-out').css({
-        display: 'block'
-    });
-}
-module.exports.hideLoader = function () {
-    $('#loader-out').css({
-        display: 'none'
-    });
-}
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
@@ -2070,7 +2070,7 @@ module.exports = function(obj, fn){
  * Module dependencies
  */
 
-var XMLHttpRequest = __webpack_require__(7);
+var XMLHttpRequest = __webpack_require__(8);
 var XHR = __webpack_require__(43);
 var JSONP = __webpack_require__(42);
 var websocket = __webpack_require__(44);
@@ -2130,8 +2130,8 @@ function polling (opts) {
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(6);
-var parseqs = __webpack_require__(9);
+var Transport = __webpack_require__(7);
+var parseqs = __webpack_require__(10);
 var parser = __webpack_require__(1);
 var inherit = __webpack_require__(3);
 var yeast = __webpack_require__(26);
@@ -2148,7 +2148,7 @@ module.exports = Polling;
  */
 
 var hasXHR2 = (function () {
-  var XMLHttpRequest = __webpack_require__(7);
+  var XMLHttpRequest = __webpack_require__(8);
   var xhr = new XMLHttpRequest({ xdomain: false });
   return null != xhr.responseType;
 })();
@@ -2786,7 +2786,7 @@ process.umask = function() { return 0; };
 var eio = __webpack_require__(39);
 var Socket = __webpack_require__(23);
 var Emitter = __webpack_require__(2);
-var parser = __webpack_require__(10);
+var parser = __webpack_require__(11);
 var on = __webpack_require__(22);
 var bind = __webpack_require__(14);
 var debug = __webpack_require__(5)('socket.io-client:manager');
@@ -3379,7 +3379,7 @@ function on (obj, ev, fn) {
  * Module dependencies.
  */
 
-var parser = __webpack_require__(10);
+var parser = __webpack_require__(11);
 var Emitter = __webpack_require__(2);
 var toArray = __webpack_require__(57);
 var on = __webpack_require__(22);
@@ -4926,7 +4926,7 @@ var index = __webpack_require__(17);
 var parser = __webpack_require__(1);
 var parseuri = __webpack_require__(19);
 var parsejson = __webpack_require__(51);
-var parseqs = __webpack_require__(9);
+var parseqs = __webpack_require__(10);
 
 /**
  * Module exports.
@@ -5058,7 +5058,7 @@ Socket.protocol = parser.protocol; // this is an int
  */
 
 Socket.Socket = Socket;
-Socket.Transport = __webpack_require__(6);
+Socket.Transport = __webpack_require__(7);
 Socket.transports = __webpack_require__(15);
 Socket.parser = __webpack_require__(1);
 
@@ -5902,7 +5902,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
  * Module requirements.
  */
 
-var XMLHttpRequest = __webpack_require__(7);
+var XMLHttpRequest = __webpack_require__(8);
 var Polling = __webpack_require__(16);
 var Emitter = __webpack_require__(2);
 var inherit = __webpack_require__(3);
@@ -6333,9 +6333,9 @@ function unloadHandler () {
  * Module dependencies.
  */
 
-var Transport = __webpack_require__(6);
+var Transport = __webpack_require__(7);
 var parser = __webpack_require__(1);
-var parseqs = __webpack_require__(9);
+var parseqs = __webpack_require__(10);
 var inherit = __webpack_require__(3);
 var yeast = __webpack_require__(26);
 var debug = __webpack_require__(4)('engine.io-client:websocket');
@@ -6857,7 +6857,7 @@ module.exports = Object.keys || function keys (obj){
  * Module requirements.
  */
 
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(9);
 
 /**
  * Module exports.
@@ -6922,7 +6922,7 @@ function hasBinary(data) {
  * Module requirements.
  */
 
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(9);
 
 /**
  * Module exports.
@@ -7960,7 +7960,7 @@ module.exports = function parsejson(data) {
  */
 
 var url = __webpack_require__(53);
-var parser = __webpack_require__(10);
+var parser = __webpack_require__(11);
 var Manager = __webpack_require__(21);
 var debug = __webpack_require__(5)('socket.io-client');
 
@@ -8363,7 +8363,7 @@ function coerce(val) {
  * Module requirements
  */
 
-var isArray = __webpack_require__(8);
+var isArray = __webpack_require__(9);
 var isBuf = __webpack_require__(24);
 
 /**
@@ -8975,7 +8975,7 @@ fabric.RoundedRect = fabric.util.createClass(fabric.Rect, {
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(11);
+var util = __webpack_require__(6);
 
 fabric.Object.prototype.toObject = (function (toObject) {
     return function (properties) {
@@ -9002,7 +9002,7 @@ fabric.Object.prototype.toObject = (function (toObject) {
  
  */
 
-var util = __webpack_require__(11);
+var util = __webpack_require__(6);
 
 var canvas;
 
@@ -9141,7 +9141,7 @@ module.exports.createImage = function (o, cb) {
 
 var fabricSettings = __webpack_require__(12);
 var socket = __webpack_require__(28).getInstance();
-var util = __webpack_require__(11);
+var util = __webpack_require__(6);
 var UndoRedo = __webpack_require__(27);
 var object_json = __webpack_require__(67);
 
@@ -9330,7 +9330,7 @@ function resetPropertyDialog(e) {
    var fabricSettings = __webpack_require__(12);
    var features = __webpack_require__(62);
    var undoRedo = __webpack_require__(27);
-   var util = __webpack_require__(11);
+   var util = __webpack_require__(6);
 
    module.exports = function () {
        var canvas = fabricSettings.getCanvas();
@@ -9752,6 +9752,45 @@ function resetPropertyDialog(e) {
            });
 
        });
+
+
+
+       $('.image-uploader').submit(function(evt){
+           evt.preventDefault();
+           var formdata = new FormData(this);
+           util.showLoader();
+           $.ajax({
+               type: 'POST',
+               url: $(this).attr('action'),
+               data: formdata,
+               cache: false,
+               contentType: false,
+               processData: false,
+               success: function(result){
+                   console.log('success',result.filename);
+                   var winwidth = $(window).width()/2;
+                   var winheight = $(window).height()/2;
+                   util.hideLoader();
+                   features.createImage({
+                       url: "/img/uploads/" + result.filename,
+                       left: winwidth,
+                       top: winheight
+                   }, function (err, object) {
+                       if (err) console.log(err);
+                       else {
+                           console.log('image added');
+                           canvas.add(object);
+                           $('#imgUploadModal').modal('hide');
+                       }
+                   });
+               },
+               error: function(err){
+                   console.log('error',err);
+                   util.hideLoader();                   
+               }
+           });
+       });
+
 
 
 

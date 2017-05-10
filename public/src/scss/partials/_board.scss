@@ -489,3 +489,26 @@ left: 0;
   from{ bottom:-100px; opacity:0 } 
   to{ bottom:0; opacity:1 }
 }
+
+
+.upload-ext-icon{
+    font-size: 30px;
+    color: #ccc;
+    position: relative;
+    background-color: #f7f7f7;
+    text-align: center;
+    padding: 10px 0px;
+    cursor: pointer;
+    margin: 20px 10px 10px 0px;
+    i{
+        display: block;
+    }   
+}
+.upload-ext-icon:hover{
+    background-color: #777;
+    color: #fff;
+}
+.upload-ext-icon-active{
+    background-color: #777;
+    color: #fff;
+}

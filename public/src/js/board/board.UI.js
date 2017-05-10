@@ -426,6 +426,45 @@
 
 
 
+       $('.image-uploader').submit(function(evt){
+           evt.preventDefault();
+           var formdata = new FormData(this);
+           util.showLoader();
+           $.ajax({
+               type: 'POST',
+               url: $(this).attr('action'),
+               data: formdata,
+               cache: false,
+               contentType: false,
+               processData: false,
+               success: function(result){
+                   console.log('success',result.filename);
+                   var winwidth = $(window).width()/2;
+                   var winheight = $(window).height()/2;
+                   util.hideLoader();
+                   features.createImage({
+                       url: "/img/uploads/" + result.filename,
+                       left: winwidth,
+                       top: winheight
+                   }, function (err, object) {
+                       if (err) console.log(err);
+                       else {
+                           console.log('image added');
+                           canvas.add(object);
+                           $('#imgUploadModal').modal('hide');
+                       }
+                   });
+               },
+               error: function(err){
+                   console.log('error',err);
+                   util.hideLoader();                   
+               }
+           });
+       });
+
+
+
+
 
        /**
         * Zoom In and Zoom Out function. This is yet to be created. The below code is just a POC.
