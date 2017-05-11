@@ -142,3 +142,11 @@ module.exports.createImage = function (o, cb) {
         cb(null, obj);
     });
 };
+
+module.exports.createStickyNote = function (o, cb) {
+    var options = o || {};
+    var obj = new fabric.StickyNote(options);
+    canvas.trigger('set:scale', obj);
+    addBaseProperties(obj);
+    cb(null, obj);
+};

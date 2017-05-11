@@ -2,6 +2,7 @@ var socket = require('./../socket').getInstance();
 var fabricSettings = require('./../configurations/fabric.configure');
 var boardUI = require('./board.UI');
 var boardEvents = require('./board.Events');
+require('./CustomClass/Stickynote');
 
 
 var canvas;

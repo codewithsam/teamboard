@@ -314,6 +314,27 @@
            });
        });
 
+       ui_notes.on('click', function(evt){
+           canvas.on('mouse:down', function(e){
+               features.createStickyNote({
+                   left: canvas.getPointer(e.e).x,
+                   top: canvas.getPointer(e.e).y,
+                   width: 100,
+                   height: 100,
+                   originX: 'center',
+                   originY: 'center',
+                   fill: '#f5df16',
+                   stroke: '#f5df16',
+                   strokeWidth: 2,
+                   borderRadius: 2,
+                   label: 'Edit me'
+               }, function (err, object) {
+                   console.log('Sticky note added');
+                   canvas.add(object);
+                   canvas.off('mouse:down');
+               });
+           })
+       });
 
 
 
@@ -500,12 +521,14 @@
                var changedVal = $(evt.target).val();
                var prop = $(evt.target).data('prop');
                var selectedObject = canvas.getActiveObject();
+               selectedObject.dirty = true;
                console.log(selectedObject._id);
                console.log(prop, changedVal);
                selectedObject.set(prop, changedVal);
                console.log(prop, changedVal);
                canvas.renderAll();
                selectedObject.setCoords();
+               selectedObject.dirty = false;
                canvas.trigger('object:modified', {
                    target: selectedObject
                });

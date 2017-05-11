@@ -9135,6 +9135,14 @@ module.exports.createImage = function (o, cb) {
     });
 };
 
+module.exports.createStickyNote = function (o, cb) {
+    var options = o || {};
+    var obj = new fabric.StickyNote(options);
+    canvas.trigger('set:scale', obj);
+    addBaseProperties(obj);
+    cb(null, obj);
+};
+
 /***/ }),
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -9238,6 +9246,7 @@ module.exports = function () {
 
 
 function resetPropertyDialog(e) {
+    console.log(e.target);
     var proplist = $('.property-list ul');
     var valuelist = $('.value-list ul');
     proplist.html('');
@@ -9643,6 +9652,27 @@ function resetPropertyDialog(e) {
            });
        });
 
+       ui_notes.on('click', function(evt){
+           canvas.on('mouse:down', function(e){
+               features.createStickyNote({
+                   left: canvas.getPointer(e.e).x,
+                   top: canvas.getPointer(e.e).y,
+                   width: 100,
+                   height: 100,
+                   originX: 'center',
+                   originY: 'center',
+                   fill: '#f5df16',
+                   stroke: '#f5df16',
+                   strokeWidth: 2,
+                   borderRadius: 2,
+                   label: 'Edit me'
+               }, function (err, object) {
+                   console.log('Sticky note added');
+                   canvas.add(object);
+                   canvas.off('mouse:down');
+               });
+           })
+       });
 
 
 
@@ -9829,12 +9859,14 @@ function resetPropertyDialog(e) {
                var changedVal = $(evt.target).val();
                var prop = $(evt.target).data('prop');
                var selectedObject = canvas.getActiveObject();
+               selectedObject.dirty = true;
                console.log(selectedObject._id);
                console.log(prop, changedVal);
                selectedObject.set(prop, changedVal);
                console.log(prop, changedVal);
                canvas.renderAll();
                selectedObject.setCoords();
+               selectedObject.dirty = false;
                canvas.trigger('object:modified', {
                    target: selectedObject
                });
@@ -9860,6 +9892,7 @@ var socket = __webpack_require__(28).getInstance();
 var fabricSettings = __webpack_require__(12);
 var boardUI = __webpack_require__(64);
 var boardEvents = __webpack_require__(63);
+__webpack_require__(73);
 
 
 var canvas;
@@ -10044,7 +10077,8 @@ module.exports = {
 	"visible": "boolean",
 	"width": "number",
 	"rx": "number",
-	"ry": "number"
+	"ry": "number",
+	"label": "string"
 };
 
 /***/ }),
@@ -10061,6 +10095,34 @@ module.exports = {
 
 module.exports = __webpack_require__(29);
 
+
+/***/ }),
+/* 72 */,
+/* 73 */
+/***/ (function(module, exports) {
+
+fabric.StickyNote = fabric.util.createClass(fabric.Rect, {
+    type: 'StickyNote',
+    initialize: function (options) {
+        options || (options = {});
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+    },
+    toObject: function () {
+        return fabric.util.object.extend(this.callSuper('toObject'), {
+            label: this.get('label')
+        });
+    },
+    _render: function (ctx) {
+        this.callSuper('_render', ctx);
+        ctx.font = '20px Helvetica';
+        ctx.fillStyle = '#333';
+        ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
+    }
+});
+fabric.StickyNote.fromObject = function (object, callback) {
+    fabric.Object._fromObject('StickyNote', object, callback, true); 
+};
 
 /***/ })
 /******/ ]);

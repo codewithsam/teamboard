@@ -97,6 +97,7 @@ module.exports = function () {
 
 
 function resetPropertyDialog(e) {
+    console.log(e.target);
     var proplist = $('.property-list ul');
     var valuelist = $('.value-list ul');
     proplist.html('');
