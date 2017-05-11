@@ -17,6 +17,7 @@ fabric.StickyNote = fabric.util.createClass(fabric.Rect, {
         ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
     }
 });
+fabric.StickyNote.async = true;
 fabric.StickyNote.fromObject = function (object, callback) {
-    fabric.Object._fromObject('StickyNote', object, callback, true); 
+     callback && callback(new fabric.StickyNote(object)); 
 };

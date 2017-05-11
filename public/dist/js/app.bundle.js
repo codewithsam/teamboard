@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 71);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4011,7 +4011,7 @@ module.exports.redo = function(){
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var configs = __webpack_require__(66);
+var configs = __webpack_require__(67);
 var socket = __webpack_require__(52);
 var instance;
 var host = configs.host;
@@ -4036,10 +4036,10 @@ module.exports.getInstance = getInstance;
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Board = __webpack_require__(65);
+var Board = __webpack_require__(66);
 var events = __webpack_require__(13);
 __webpack_require__(60);
-__webpack_require__(61);
+__webpack_require__(62);
 var app = new Board();
 
 /***/ }),
@@ -6343,7 +6343,7 @@ var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
 var NodeWebSocket;
 if (typeof window === 'undefined') {
   try {
-    NodeWebSocket = __webpack_require__(70);
+    NodeWebSocket = __webpack_require__(71);
   } catch (e) { }
 }
 
@@ -8973,6 +8973,34 @@ fabric.RoundedRect = fabric.util.createClass(fabric.Rect, {
 
 /***/ }),
 /* 61 */
+/***/ (function(module, exports) {
+
+fabric.StickyNote = fabric.util.createClass(fabric.Rect, {
+    type: 'StickyNote',
+    initialize: function (options) {
+        options || (options = {});
+        this.callSuper('initialize', options);
+        this.set('label', options.label || '');
+    },
+    toObject: function () {
+        return fabric.util.object.extend(this.callSuper('toObject'), {
+            label: this.get('label')
+        });
+    },
+    _render: function (ctx) {
+        this.callSuper('_render', ctx);
+        ctx.font = '20px Helvetica';
+        ctx.fillStyle = '#333';
+        ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
+    }
+});
+fabric.StickyNote.async = true;
+fabric.StickyNote.fromObject = function (object, callback) {
+     callback && callback(new fabric.StickyNote(object)); 
+};
+
+/***/ }),
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(6);
@@ -8987,7 +9015,7 @@ fabric.Object.prototype.toObject = (function (toObject) {
 })(fabric.Object.prototype.toObject);
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9144,14 +9172,14 @@ module.exports.createStickyNote = function (o, cb) {
 };
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fabricSettings = __webpack_require__(12);
 var socket = __webpack_require__(28).getInstance();
 var util = __webpack_require__(6);
 var UndoRedo = __webpack_require__(27);
-var object_json = __webpack_require__(67);
+var object_json = __webpack_require__(68);
 
 
 module.exports = function () {
@@ -9333,11 +9361,11 @@ function resetPropertyDialog(e) {
 }
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
    var fabricSettings = __webpack_require__(12);
-   var features = __webpack_require__(62);
+   var features = __webpack_require__(63);
    var undoRedo = __webpack_require__(27);
    var util = __webpack_require__(6);
 
@@ -9885,14 +9913,14 @@ function resetPropertyDialog(e) {
    };
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var socket = __webpack_require__(28).getInstance();
 var fabricSettings = __webpack_require__(12);
-var boardUI = __webpack_require__(64);
-var boardEvents = __webpack_require__(63);
-__webpack_require__(73);
+var boardUI = __webpack_require__(65);
+var boardEvents = __webpack_require__(64);
+__webpack_require__(61);
 
 
 var canvas;
@@ -9946,7 +9974,7 @@ Board.prototype.initEvents = boardEvents;
 module.exports = Board;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -9955,7 +9983,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -10082,47 +10110,19 @@ module.exports = {
 };
 
 /***/ }),
-/* 68 */,
 /* 69 */,
-/* 70 */
+/* 70 */,
+/* 71 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(29);
 
-
-/***/ }),
-/* 72 */,
-/* 73 */
-/***/ (function(module, exports) {
-
-fabric.StickyNote = fabric.util.createClass(fabric.Rect, {
-    type: 'StickyNote',
-    initialize: function (options) {
-        options || (options = {});
-        this.callSuper('initialize', options);
-        this.set('label', options.label || '');
-    },
-    toObject: function () {
-        return fabric.util.object.extend(this.callSuper('toObject'), {
-            label: this.get('label')
-        });
-    },
-    _render: function (ctx) {
-        this.callSuper('_render', ctx);
-        ctx.font = '20px Helvetica';
-        ctx.fillStyle = '#333';
-        ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
-    }
-});
-fabric.StickyNote.fromObject = function (object, callback) {
-    fabric.Object._fromObject('StickyNote', object, callback, true); 
-};
 
 /***/ })
 /******/ ]);
