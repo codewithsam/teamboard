@@ -314,8 +314,8 @@
            });
        });
 
-       ui_notes.on('click', function(evt){
-           canvas.on('mouse:down', function(e){
+       ui_notes.on('click', function (evt) {
+           canvas.on('mouse:down', function (e) {
                features.createStickyNote({
                    left: canvas.getPointer(e.e).x,
                    top: canvas.getPointer(e.e).y,
@@ -326,15 +326,80 @@
                    fill: '#f5df16',
                    stroke: '#f5df16',
                    strokeWidth: 2,
-                   borderRadius: 2,
-                   label: 'Edit me'
+                   label: 'Edit me',
+                   rx: 5,
+                   ry: 5
                }, function (err, object) {
                    console.log('Sticky note added');
                    canvas.add(object);
+                   object.setShadow("0px 6px 5px rgba(94, 128, 191, 0.5)");
                    canvas.off('mouse:down');
                });
-           })
+           });
        });
+
+
+
+
+
+       /**
+        * Todo: We will work on this later.
+        * Target: Create a div on top of a rectangle as a sticky note and when ever rectangle is moved or scaled or selected manipulate the div accordingly.
+        */
+
+       //    ui_notes.on('click', function (evt) {
+       //        canvas.on('mouse:down', function (e) {
+       //            features.createStickyNote({
+       //                left: canvas.getPointer(e.e).x,
+       //                top: canvas.getPointer(e.e).y,
+       //                width: 100,
+       //                height: 100,
+       //                fill: '#ffffff',
+       //                stroke: '#000000',
+       //                label: 'Edit me'
+       //            }, function (err, object) {
+       //                console.log('rectangle added');
+       //                canvas.add(object);
+       //                canvas.off('mouse:down');
+       //             //    console.log('lala');
+       //             //    console.log(object.top);
+       //             //    var notediv = '<div class="canvas-notes" id="'+object._id+'" style="top: '+(object.top+70)+'px; left: '+object.left+'px;width: '+object.width+'px;height: '+object.height+'px;"></div>';
+       //             //    $('body').append(notediv);
+       //            });
+       //        });
+       //    });
+
+
+
+
+
+
+
+       ui_connector_up.on('click', function (evt) {
+           features.createPath('M 0 0 Q 100, 100, 200, 0', {
+               left: 120,
+               top: 120,
+               fill: '',
+               stroke: '#000000',
+               strokeWidth: 3,
+               selectable: false,
+               hasControls: false
+           }, function (err, object) {
+
+               canvas.add(object);
+           });
+
+       });
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -421,8 +486,8 @@
                },
                dataType: 'json',
                success: function (response) {
-                   var winwidth = $(window).width()/2;
-                   var winheight = $(window).height()/2;
+                   var winwidth = $(window).width() / 2;
+                   var winheight = $(window).height() / 2;
                    util.hideLoader();
                    features.createImage({
                        url: "/img/webshot/" + response + ".png",
@@ -439,7 +504,7 @@
                },
                error: function (xhr, status, error) {
                    console.log(error);
-                    util.hideLoader();
+                   util.hideLoader();
                }
            });
 
@@ -447,7 +512,7 @@
 
 
 
-       $('.image-uploader').submit(function(evt){
+       $('.image-uploader').submit(function (evt) {
            evt.preventDefault();
            var formdata = new FormData(this);
            util.showLoader();
@@ -458,10 +523,10 @@
                cache: false,
                contentType: false,
                processData: false,
-               success: function(result){
-                   console.log('success',result.filename);
-                   var winwidth = $(window).width()/2;
-                   var winheight = $(window).height()/2;
+               success: function (result) {
+                   console.log('success', result.filename);
+                   var winwidth = $(window).width() / 2;
+                   var winheight = $(window).height() / 2;
                    util.hideLoader();
                    features.createImage({
                        url: "/img/uploads/" + result.filename,
@@ -476,9 +541,9 @@
                        }
                    });
                },
-               error: function(err){
-                   console.log('error',err);
-                   util.hideLoader();                   
+               error: function (err) {
+                   console.log('error', err);
+                   util.hideLoader();
                }
            });
        });

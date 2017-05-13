@@ -512,3 +512,12 @@ left: 0;
     background-color: #777;
     color: #fff;
 }
+.canvas-notes{
+    z-index: 10000;
+    background-color: #f5df16;
+    position: absolute;
+}
+.canvas-comment-icon{
+    font-size: 30px;
+    color: #286090;
+}

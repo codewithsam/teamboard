@@ -8988,10 +8988,13 @@ fabric.StickyNote = fabric.util.createClass(fabric.Rect, {
         });
     },
     _render: function (ctx) {
+        console.log('renderedlalala');
         this.callSuper('_render', ctx);
         ctx.font = '20px Helvetica';
         ctx.fillStyle = '#333';
-        ctx.fillText(this.label, -this.width / 2, -this.height / 2 + 20);
+        ctx.fillText(this.label, -this.width / 2+10, -this.height / 2 + 20);
+        // var notediv = '<div class="canvas-notes" id="'+this._id+'" style="top: '+(this.top+70)+'px; left: '+this.left+'px;width: '+this.width+'px;height: '+this.height+'px;"></div>';
+        // $('body').append(notediv);
     }
 });
 fabric.StickyNote.async = true;
@@ -9152,7 +9155,7 @@ module.exports.createHexagon = function (o, cb) {
 module.exports.createImage = function (o, cb) {
     var options = o || {};
     if (!options.url) {
-        cb("url is required to create an image",null);
+        cb("url is required to create an image", null);
     }
     fabric.Image.fromURL(options.url, function (obj) {
         obj.set('left', options.left);
@@ -9170,6 +9173,67 @@ module.exports.createStickyNote = function (o, cb) {
     addBaseProperties(obj);
     cb(null, obj);
 };
+
+
+function makeCurveCircle(left, top,id) {
+    var c = new fabric.Circle({
+        left: left,
+        top: top,
+        strokeWidth: 5,
+        radius: 12,
+        fill: '#ff0000',
+        stroke: '#666666',
+        originX: 'center',
+        originY: 'center',
+        _relid: id
+    });
+
+    c.hasBorders = c.hasControls = false;
+    return c;
+}
+
+function makeCurvePoint(left, top,id) {
+    var c = new fabric.Circle({
+        left: left,
+        top: top,
+        strokeWidth: 8,
+        radius: 6,
+        fill: '#ffffff',
+        stroke: '#666666',
+        originX: 'center',
+        originY: 'center',
+        _relid: id
+    });
+
+    c.hasBorders = c.hasControls = false;
+    return c;
+}
+
+module.exports.createPath = function (path, o, cb) {
+    var options = o || {};
+    var obj = new fabric.Path(path, options);
+    canvas.trigger('set:scale', obj);
+    addBaseProperties(obj);
+
+    obj.selectable = false;
+    obj.hasControls = false;
+    console.log(obj.path);
+    console.log(obj.left+obj.path[0][1], obj.top+obj.path[0][2]);
+
+    var p1 = makeCurvePoint(obj.path[1][1]+100,obj.path[1][2]+100,obj._id);
+    p1.name = "p1";
+    canvas.add(p1);
+
+    var p0 = makeCurveCircle(obj.left+obj.path[0][1], obj.top+obj.path[0][1], obj._id);
+    p0.name = "p0";
+    canvas.add(p0);
+
+    var p2 = makeCurveCircle(obj.path[1][3]+obj.left, obj.path[1][4]+obj.top, obj._id);
+    p2.name = "p2";
+    canvas.add(p2);
+    cb(null, obj);
+};
+
 
 /***/ }),
 /* 64 */
@@ -9212,9 +9276,11 @@ module.exports = function () {
     });
 
     canvas.on('object:modified', function (e) {
-        console.log(e);
+        if(e.target.name == "p0" || e.target.name == "p1" || e.target.name == "p2"){
+            onPathMoving(e, canvas);
+        }
         var fabricObject = e.target;
-        console.log(e.target);
+        // console.log(e.target);
         sessionStorage.removeItem(fabricObject._id);
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log("Object changed");
@@ -9263,18 +9329,18 @@ module.exports = function () {
 
     canvas.on('object:selected', resetPropertyDialog);
     canvas.on('selection:cleared', function (e) {
-            var proplist = $('.property-list ul');
-            var valuelist = $('.value-list ul');
-            proplist.html('');
-            valuelist.html('');
-            var textToInsert = [];
-            var propToInsert = [];
+        var proplist = $('.property-list ul');
+        var valuelist = $('.value-list ul');
+        proplist.html('');
+        valuelist.html('');
+        var textToInsert = [];
+        var propToInsert = [];
     });
 };
 
 
 function resetPropertyDialog(e) {
-    console.log(e.target);
+    // console.log(e.target);
     var proplist = $('.property-list ul');
     var valuelist = $('.value-list ul');
     proplist.html('');
@@ -9358,6 +9424,92 @@ function resetPropertyDialog(e) {
     }
     proplist.append(propToInsert.join(''));
     valuelist.append(textToInsert.join(''));
+}
+
+
+
+function onPathMoving(e, canvas) {
+    var path = [];
+    var p = e.target;
+    var objs = canvas.getObjects();
+    var curveLine;
+    for (var i = 0; i < objs.length; i++) {
+        if (objs[i]._id === p._relid) {
+            curveLine = objs[i];
+        }
+    }
+    if (p.name == "p0") {
+        curveLine.path[0][1] = p.left;
+        curveLine.path[0][2] = p.top;
+    }
+    if(p.name == "p2"){
+        curveLine.path[1][3] = p.left;
+        curveLine.path[1][4] = p.top;
+    }
+    if(p.name == "p1"){
+        curveLine.path[1][1] = p.left;
+        curveLine.path[1][2] = p.top;
+    }
+    var options = curveLine.toObject();
+    canvas.remove(curveLine);
+    console.info(options);
+    var newCurve = new fabric.Path(curveLine.path, {
+        fill: options.fill,
+        stroke: options.stroke,
+        strokeWidth: options.strokeWidth,
+        _id: options._id,
+        selectable: false,
+        hasControls: false
+    });
+    newCurve.selectable = false;
+    newCurve.hasControls = false;
+    canvas.add(newCurve);
+    canvas.renderAll();
+
+    // var p = e.target;
+    // if (p.name == "p0" || p.name == "p2") {
+    //     if (p.line1) {
+    //         p.line1.path[0][1] = p.left;
+    //         p.line1.path[0][2] = p.top;
+    //     } else if (p.line3) {
+    //         p.line3.path[1][3] = p.left;
+    //         p.line3.path[1][4] = p.top;
+    //     }
+    // } else if (p.name == "p1") {
+    //     if (p.line2) {
+    //         p.line2.path[1][1] = p.left;
+    //         p.line2.path[1][2] = p.top;
+    //     }
+    // } else if (p.name == "p0" || p.name == "p2") {
+    //     p.line1 && p.line1.set({
+    //         'x2': p.left,
+    //         'y2': p.top
+    //     });
+    //     p.line2 && p.line2.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    //     p.line3 && p.line3.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    //     p.line4 && p.line4.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    // }
+    // var options = p.toObject();
+    // canvas.remove(p);
+
+    // var line = new fabric.Path(p.path, options);
+    // canvas.add(line);
+
+
+
+
+
+
+
 }
 
 /***/ }),
@@ -9680,8 +9832,8 @@ function resetPropertyDialog(e) {
            });
        });
 
-       ui_notes.on('click', function(evt){
-           canvas.on('mouse:down', function(e){
+       ui_notes.on('click', function (evt) {
+           canvas.on('mouse:down', function (e) {
                features.createStickyNote({
                    left: canvas.getPointer(e.e).x,
                    top: canvas.getPointer(e.e).y,
@@ -9692,15 +9844,80 @@ function resetPropertyDialog(e) {
                    fill: '#f5df16',
                    stroke: '#f5df16',
                    strokeWidth: 2,
-                   borderRadius: 2,
-                   label: 'Edit me'
+                   label: 'Edit me',
+                   rx: 5,
+                   ry: 5
                }, function (err, object) {
                    console.log('Sticky note added');
                    canvas.add(object);
+                   object.setShadow("0px 6px 5px rgba(94, 128, 191, 0.5)");
                    canvas.off('mouse:down');
                });
-           })
+           });
        });
+
+
+
+
+
+       /**
+        * Todo: We will work on this later.
+        * Target: Create a div on top of a rectangle as a sticky note and when ever rectangle is moved or scaled or selected manipulate the div accordingly.
+        */
+
+       //    ui_notes.on('click', function (evt) {
+       //        canvas.on('mouse:down', function (e) {
+       //            features.createStickyNote({
+       //                left: canvas.getPointer(e.e).x,
+       //                top: canvas.getPointer(e.e).y,
+       //                width: 100,
+       //                height: 100,
+       //                fill: '#ffffff',
+       //                stroke: '#000000',
+       //                label: 'Edit me'
+       //            }, function (err, object) {
+       //                console.log('rectangle added');
+       //                canvas.add(object);
+       //                canvas.off('mouse:down');
+       //             //    console.log('lala');
+       //             //    console.log(object.top);
+       //             //    var notediv = '<div class="canvas-notes" id="'+object._id+'" style="top: '+(object.top+70)+'px; left: '+object.left+'px;width: '+object.width+'px;height: '+object.height+'px;"></div>';
+       //             //    $('body').append(notediv);
+       //            });
+       //        });
+       //    });
+
+
+
+
+
+
+
+       ui_connector_up.on('click', function (evt) {
+           features.createPath('M 0 0 Q 100, 100, 200, 0', {
+               left: 120,
+               top: 120,
+               fill: '',
+               stroke: '#000000',
+               strokeWidth: 3,
+               selectable: false,
+               hasControls: false
+           }, function (err, object) {
+
+               canvas.add(object);
+           });
+
+       });
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -9787,8 +10004,8 @@ function resetPropertyDialog(e) {
                },
                dataType: 'json',
                success: function (response) {
-                   var winwidth = $(window).width()/2;
-                   var winheight = $(window).height()/2;
+                   var winwidth = $(window).width() / 2;
+                   var winheight = $(window).height() / 2;
                    util.hideLoader();
                    features.createImage({
                        url: "/img/webshot/" + response + ".png",
@@ -9805,7 +10022,7 @@ function resetPropertyDialog(e) {
                },
                error: function (xhr, status, error) {
                    console.log(error);
-                    util.hideLoader();
+                   util.hideLoader();
                }
            });
 
@@ -9813,7 +10030,7 @@ function resetPropertyDialog(e) {
 
 
 
-       $('.image-uploader').submit(function(evt){
+       $('.image-uploader').submit(function (evt) {
            evt.preventDefault();
            var formdata = new FormData(this);
            util.showLoader();
@@ -9824,10 +10041,10 @@ function resetPropertyDialog(e) {
                cache: false,
                contentType: false,
                processData: false,
-               success: function(result){
-                   console.log('success',result.filename);
-                   var winwidth = $(window).width()/2;
-                   var winheight = $(window).height()/2;
+               success: function (result) {
+                   console.log('success', result.filename);
+                   var winwidth = $(window).width() / 2;
+                   var winheight = $(window).height() / 2;
                    util.hideLoader();
                    features.createImage({
                        url: "/img/uploads/" + result.filename,
@@ -9842,9 +10059,9 @@ function resetPropertyDialog(e) {
                        }
                    });
                },
-               error: function(err){
-                   console.log('error',err);
-                   util.hideLoader();                   
+               error: function (err) {
+                   console.log('error', err);
+                   util.hideLoader();
                }
            });
        });

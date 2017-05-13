@@ -132,7 +132,7 @@ module.exports.createHexagon = function (o, cb) {
 module.exports.createImage = function (o, cb) {
     var options = o || {};
     if (!options.url) {
-        cb("url is required to create an image",null);
+        cb("url is required to create an image", null);
     }
     fabric.Image.fromURL(options.url, function (obj) {
         obj.set('left', options.left);
@@ -148,5 +148,65 @@ module.exports.createStickyNote = function (o, cb) {
     var obj = new fabric.StickyNote(options);
     canvas.trigger('set:scale', obj);
     addBaseProperties(obj);
+    cb(null, obj);
+};
+
+
+function makeCurveCircle(left, top,id) {
+    var c = new fabric.Circle({
+        left: left,
+        top: top,
+        strokeWidth: 5,
+        radius: 12,
+        fill: '#ff0000',
+        stroke: '#666666',
+        originX: 'center',
+        originY: 'center',
+        _relid: id
+    });
+
+    c.hasBorders = c.hasControls = false;
+    return c;
+}
+
+function makeCurvePoint(left, top,id) {
+    var c = new fabric.Circle({
+        left: left,
+        top: top,
+        strokeWidth: 8,
+        radius: 6,
+        fill: '#ffffff',
+        stroke: '#666666',
+        originX: 'center',
+        originY: 'center',
+        _relid: id
+    });
+
+    c.hasBorders = c.hasControls = false;
+    return c;
+}
+
+module.exports.createPath = function (path, o, cb) {
+    var options = o || {};
+    var obj = new fabric.Path(path, options);
+    canvas.trigger('set:scale', obj);
+    addBaseProperties(obj);
+
+    obj.selectable = false;
+    obj.hasControls = false;
+    console.log(obj.path);
+    console.log(obj.left+obj.path[0][1], obj.top+obj.path[0][2]);
+
+    var p1 = makeCurvePoint(obj.path[1][1]+100,obj.path[1][2]+100,obj._id);
+    p1.name = "p1";
+    canvas.add(p1);
+
+    var p0 = makeCurveCircle(obj.left+obj.path[0][1], obj.top+obj.path[0][1], obj._id);
+    p0.name = "p0";
+    canvas.add(p0);
+
+    var p2 = makeCurveCircle(obj.path[1][3]+obj.left, obj.path[1][4]+obj.top, obj._id);
+    p2.name = "p2";
+    canvas.add(p2);
     cb(null, obj);
 };

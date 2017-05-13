@@ -35,9 +35,11 @@ module.exports = function () {
     });
 
     canvas.on('object:modified', function (e) {
-        console.log(e);
+        if(e.target.name == "p0" || e.target.name == "p1" || e.target.name == "p2"){
+            onPathMoving(e, canvas);
+        }
         var fabricObject = e.target;
-        console.log(e.target);
+        // console.log(e.target);
         sessionStorage.removeItem(fabricObject._id);
         sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
         console.log("Object changed");
@@ -86,18 +88,18 @@ module.exports = function () {
 
     canvas.on('object:selected', resetPropertyDialog);
     canvas.on('selection:cleared', function (e) {
-            var proplist = $('.property-list ul');
-            var valuelist = $('.value-list ul');
-            proplist.html('');
-            valuelist.html('');
-            var textToInsert = [];
-            var propToInsert = [];
+        var proplist = $('.property-list ul');
+        var valuelist = $('.value-list ul');
+        proplist.html('');
+        valuelist.html('');
+        var textToInsert = [];
+        var propToInsert = [];
     });
 };
 
 
 function resetPropertyDialog(e) {
-    console.log(e.target);
+    // console.log(e.target);
     var proplist = $('.property-list ul');
     var valuelist = $('.value-list ul');
     proplist.html('');
@@ -181,4 +183,90 @@ function resetPropertyDialog(e) {
     }
     proplist.append(propToInsert.join(''));
     valuelist.append(textToInsert.join(''));
+}
+
+
+
+function onPathMoving(e, canvas) {
+    var path = [];
+    var p = e.target;
+    var objs = canvas.getObjects();
+    var curveLine;
+    for (var i = 0; i < objs.length; i++) {
+        if (objs[i]._id === p._relid) {
+            curveLine = objs[i];
+        }
+    }
+    if (p.name == "p0") {
+        curveLine.path[0][1] = p.left;
+        curveLine.path[0][2] = p.top;
+    }
+    if(p.name == "p2"){
+        curveLine.path[1][3] = p.left;
+        curveLine.path[1][4] = p.top;
+    }
+    if(p.name == "p1"){
+        curveLine.path[1][1] = p.left;
+        curveLine.path[1][2] = p.top;
+    }
+    var options = curveLine.toObject();
+    canvas.remove(curveLine);
+    console.info(options);
+    var newCurve = new fabric.Path(curveLine.path, {
+        fill: options.fill,
+        stroke: options.stroke,
+        strokeWidth: options.strokeWidth,
+        _id: options._id,
+        selectable: false,
+        hasControls: false
+    });
+    newCurve.selectable = false;
+    newCurve.hasControls = false;
+    canvas.add(newCurve);
+    canvas.renderAll();
+
+    // var p = e.target;
+    // if (p.name == "p0" || p.name == "p2") {
+    //     if (p.line1) {
+    //         p.line1.path[0][1] = p.left;
+    //         p.line1.path[0][2] = p.top;
+    //     } else if (p.line3) {
+    //         p.line3.path[1][3] = p.left;
+    //         p.line3.path[1][4] = p.top;
+    //     }
+    // } else if (p.name == "p1") {
+    //     if (p.line2) {
+    //         p.line2.path[1][1] = p.left;
+    //         p.line2.path[1][2] = p.top;
+    //     }
+    // } else if (p.name == "p0" || p.name == "p2") {
+    //     p.line1 && p.line1.set({
+    //         'x2': p.left,
+    //         'y2': p.top
+    //     });
+    //     p.line2 && p.line2.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    //     p.line3 && p.line3.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    //     p.line4 && p.line4.set({
+    //         'x1': p.left,
+    //         'y1': p.top
+    //     });
+    // }
+    // var options = p.toObject();
+    // canvas.remove(p);
+
+    // var line = new fabric.Path(p.path, options);
+    // canvas.add(line);
+
+
+
+
+
+
+
 }
