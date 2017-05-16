@@ -60,5 +60,17 @@ module.exports = function (io) {
             })
             socket.broadcast.to(boardid).emit('object:removed', msg);
         });
+        socket.on('chat:send', function(msg){
+            UserModel.getUserById(msg._id, function(err,data){
+                if(err) throw err;
+                var m = {};
+                m.name = data.name || '';
+                m._id = data._id || '';
+                m.email = data._email || '';
+                m.img = data.img || '';
+                m.msg = msg.msg || '';
+                socket.broadcast.to(boardid).emit('chat:send', m);
+            });
+        });
     });
 };

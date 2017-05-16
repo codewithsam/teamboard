@@ -67,6 +67,7 @@
 
        var proplist = $('.property-list ul');
        var valuelist = $('.value-list ul');
+       var chatsend = $('.chat-send');
        /**
         * Required to reset all unused events
         */
@@ -76,6 +77,9 @@
         * These buttons are disabled until we create features for them.
         */
        ui_redo.addClass('li-disabled');
+       ui_hand.addClass('li-disabled');
+       ui_expand.addClass('li-disabled');
+       ui_comment.addClass('li-disabled');
 
 
 
@@ -602,8 +606,17 @@
        });
 
 
+/**
+ * CHATTING APP
+ */
 
 
+ chatsend.on('click', function(evt){
+     var msg = $('#chatmessage').val();
+     var uid = window._globaluid;
+     var name = window._globaluname;
+     canvas.trigger('chat:send', {_id: uid, msg: msg, name:name});
+ });
 
 
 

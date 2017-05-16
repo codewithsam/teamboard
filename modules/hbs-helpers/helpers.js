@@ -6,3 +6,6 @@ exports.currentBoardData = function(object,property){
    var o = JSON.parse(object);
    return o[property];
 }
+exports.getUser = function(user){
+    console.log(user);
+}

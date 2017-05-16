@@ -18,10 +18,10 @@ module.exports.initialize = function (c) {
     canvas = c;
 
     canvas.on('set:scale', function (o) {
-        if (o.width) o.width = o.width * 1 / canvas.getZoom();
-        if (o.height) o.height = o.height * 1 / canvas.getZoom();
-        if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
-        if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
+        // if (o.width) o.width = o.width * 1 / canvas.getZoom();
+        // if (o.height) o.height = o.height * 1 / canvas.getZoom();
+        // if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
+        // if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
 
         console.log("Fired event 'set:scale', setting scale");
     });

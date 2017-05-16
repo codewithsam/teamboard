@@ -193,7 +193,8 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    var flag = false;
+    (function(){
+        var flag = false;
     $('.sidebar-toggler').click(function () {
         if (!flag) {
             flag = true;
@@ -215,6 +216,34 @@ $(document).ready(function () {
             });
         }
     });
+    }());
+
+
+    (function(){
+        var flag = false;        
+        $('.sidebar-chat-btn').click(function () {
+        if (!flag) {
+            flag = true;
+            //show
+            $('.sidebar-chat-wrapper').stop(true).animate({
+                right: 0
+            });
+            // $(this).animate({
+            //     right: $('.sidebar-options').width()
+            // });
+        } else {
+            //hide
+            flag = false;
+            $('.sidebar-chat-wrapper').stop(true).animate({
+                right: -$('.sidebar-chat-wrapper').width() - 5
+            });
+            // $(this).animate({
+            //     right: 0
+            // });
+        }
+    });
+    }());
+
 
     $('div.split-pane').splitPane();
     // $('#left-component').on('scroll', function () {

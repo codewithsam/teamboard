@@ -9041,10 +9041,10 @@ module.exports.initialize = function (c) {
     canvas = c;
 
     canvas.on('set:scale', function (o) {
-        if (o.width) o.width = o.width * 1 / canvas.getZoom();
-        if (o.height) o.height = o.height * 1 / canvas.getZoom();
-        if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
-        if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
+        // if (o.width) o.width = o.width * 1 / canvas.getZoom();
+        // if (o.height) o.height = o.height * 1 / canvas.getZoom();
+        // if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
+        // if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
 
         console.log("Fired event 'set:scale', setting scale");
     });
@@ -9276,7 +9276,7 @@ module.exports = function () {
     });
 
     canvas.on('object:modified', function (e) {
-        if(e.target.name == "p0" || e.target.name == "p1" || e.target.name == "p2"){
+        if (e.target.name == "p0" || e.target.name == "p1" || e.target.name == "p2") {
             onPathMoving(e, canvas);
         }
         var fabricObject = e.target;
@@ -9335,6 +9335,17 @@ module.exports = function () {
         valuelist.html('');
         var textToInsert = [];
         var propToInsert = [];
+    });
+    canvas.on('chat:send', function (e) {
+        if(!e.img){ e.img = 'Letter-A-icon.png'; }
+        var template = '<li class="chat-right"><img src="/img/alphabet/' + e.img + '" alt=""><div><span>' + e.name + '</span><p>' + e.msg + '</p></div></li>';
+        $('ul.messages').append(template);
+        socket.emit('chat:send', e);
+    });
+    socket.on('chat:send', function (msg) {
+        if(!msg.img){ msg.img = 'Letter-A-icon.png'; }        
+        var template = '<li class="chat-left"><img src="/img/alphabet/' + msg.img + '" alt=""><div><span>' + msg.name + '</span><p>' + msg.msg + '</p></div></li>';
+        $('ul.messages').append(template);
     });
 };
 
@@ -9442,11 +9453,11 @@ function onPathMoving(e, canvas) {
         curveLine.path[0][1] = p.left;
         curveLine.path[0][2] = p.top;
     }
-    if(p.name == "p2"){
+    if (p.name == "p2") {
         curveLine.path[1][3] = p.left;
         curveLine.path[1][4] = p.top;
     }
-    if(p.name == "p1"){
+    if (p.name == "p1") {
         curveLine.path[1][1] = p.left;
         curveLine.path[1][2] = p.top;
     }
@@ -9585,6 +9596,7 @@ function onPathMoving(e, canvas) {
 
        var proplist = $('.property-list ul');
        var valuelist = $('.value-list ul');
+       var chatsend = $('.chat-send');
        /**
         * Required to reset all unused events
         */
@@ -9594,6 +9606,9 @@ function onPathMoving(e, canvas) {
         * These buttons are disabled until we create features for them.
         */
        ui_redo.addClass('li-disabled');
+       ui_hand.addClass('li-disabled');
+       ui_expand.addClass('li-disabled');
+       ui_comment.addClass('li-disabled');
 
 
 
@@ -10120,8 +10135,17 @@ function onPathMoving(e, canvas) {
        });
 
 
+/**
+ * CHATTING APP
+ */
 
 
+ chatsend.on('click', function(evt){
+     var msg = $('#chatmessage').val();
+     var uid = window._globaluid;
+     var name = window._globaluname;
+     canvas.trigger('chat:send', {_id: uid, msg: msg, name:name});
+ });
 
 
 

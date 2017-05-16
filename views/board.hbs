@@ -209,6 +209,59 @@
 
 
 
+<!--
+    Chatting sidebar
+-->
+
+
+<div class="sidebar-chat-wrapper">
+    <div class="sidebar-chat-btn"><span>Chat</span></div>
+    <div class="sidebar-chat">
+        <div class="attachments">UPLOAD</div>
+        <div class="user-status">
+            <ul>
+                <h4>User Status</h4>
+                <li>
+                    <i class="fa fa-circle circle-online"></i>
+                    <span>Sanyam Singh (sam@gmail.com)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="chat-window">
+            <div class="top-menu">
+                <div class="title">Chat</div>
+            </div>
+            <ul class="messages">
+                {{!--<li class="chat-left">
+                    <img src="/img/alphabet/Letter-A-icon.png" alt="">
+                    <div>
+                        <span>Sanyam Singh</span>
+                        <p>lorem ipsum asdasda sd asds sda sd er a s d lorem ipsum asdasda sd asds sda sd er a s d lorem ipsum
+                            asdasda sd asds sda sd er a s d</p>
+                    </div>
+                </li>--}}
+                {{!--<li class="chat-right">
+
+                    <img src="/img/alphabet/Letter-A-icon.png" alt="">
+                    <div>
+                        <span>Danish Singh</span>
+                        <p>lorem ipsum asdasda sd asds sda sd er a s d lorem ipsum asdasda sd asds sda sd er a s d lorem ipsum
+                            asdasda sd asds sda sd er a s d</p>
+                    </div>
+                </li>--}}
+            </ul>
+            <div class="bottom-wrapper">
+                <div class="message_input_wrapper"><textarea id="chatmessage" placeholder="Type your message here..."></textarea></div>
+                <div class="send_message">
+                    <button class="btn btn-success chat-send"> <i class="fa fa-paper-plane-o"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="shareModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content member-add-share-modal">
@@ -297,7 +350,9 @@
 
 
 
+<div>
 
+</div>
 
 
 
@@ -325,6 +380,8 @@
 </script>
 <script>
     window._globalBoardData = JSON.parse('{{{teams}}}');
+    window._globaluid = '{{user._id}}';
+    window._globaluname = '{{user.name}}';
 
 </script>
 <script src="/dist/bower_components/fabric.js/dist/fabric.js"></script>
