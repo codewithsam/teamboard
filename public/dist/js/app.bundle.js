@@ -10140,7 +10140,8 @@ function onPathMoving(e, canvas) {
  */
 
 
- chatsend.on('click', function(evt){
+ $('.bottom-wrapper').on('submit', function(evt){
+     evt.preventDefault();
      var msg = $('#chatmessage').val();
      var uid = window._globaluid;
      var name = window._globaluname;
@@ -10174,6 +10175,7 @@ function Board() {
     socket.on('connect', function () {
         canvas = new fabric.Canvas(fabricSettings.canvasId, fabricSettings);
         window._canvas = canvas;
+
         var objectList = [];
         if (sessionStorage.length < 1) {
             // console.log(window._globalBoardData.data);

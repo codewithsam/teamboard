@@ -611,7 +611,8 @@
  */
 
 
- chatsend.on('click', function(evt){
+ $('.bottom-wrapper').on('submit', function(evt){
+     evt.preventDefault();
      var msg = $('#chatmessage').val();
      var uid = window._globaluid;
      var name = window._globaluname;
