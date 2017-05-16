@@ -17,6 +17,18 @@ var BoardSchema = new Schema({
         "type": Schema.Types.ObjectId,
         "ref": "User"
     }],
+    chat: [{
+        message: String,
+        created_by: {
+            "type": Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        created_at: {
+            type: Date,
+            default: Date.now
+        }
+
+    }],
     created_at: {
         type: Date,
         default: Date.now
@@ -34,8 +46,8 @@ module.exports.createBoard = function (board, cb) {
     board.save(cb);
 };
 
-module.exports.getById = function(id,cb){
-    Whiteboard.findById(id,cb);
+module.exports.getById = function (id, cb) {
+    Whiteboard.findById(id, cb);
 }
 
 module.exports.getByIdWithOptions = function (id, opt, cb) {
@@ -84,12 +96,49 @@ module.exports.modifyDataFromSocket = function (boardid, msg, cb) {
     if (!msg.id || !msg.data) {
         return;
     }
-    Whiteboard.update({'data.guid': msg.id},{$set: {'data.$.data': msg.data } }, cb);
+    Whiteboard.update({
+        'data.guid': msg.id
+    }, {
+        $set: {
+            'data.$.data': msg.data
+        }
+    }, cb);
 };
 module.exports.deleteDataFromSocket = function (boardid, id, cb) {
     if (!id) {
         return;
     }
     console.log(id);
-    Whiteboard.update({'data.guid': id},{$pull: {'data':  {'guid': id} } }, cb);
+    Whiteboard.update({
+        'data.guid': id
+    }, {
+        $pull: {
+            'data': {
+                'guid': id
+            }
+        }
+    }, cb);
+};
+module.exports.addToChat = function (boardid, data, cb) {
+    var msg = data.msg || '';
+    var uid = data._id || undefined;
+    if (!boardid || !uid) {
+        console.log(boardid, uid);
+        console.log('what');
+        cb(new Error("Please specify board id and user id"));
+        return;
+    }
+    Whiteboard.update({
+        _id: boardid
+    }, {
+        $push: {
+            chat: {
+                'message': msg,
+                'created_by': uid
+            }
+        }
+    }, {
+        safe: true,
+        upsert: true
+    }, cb);
 };

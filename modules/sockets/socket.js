@@ -61,6 +61,12 @@ module.exports = function (io) {
             socket.broadcast.to(boardid).emit('object:removed', msg);
         });
         socket.on('chat:send', function(msg){
+
+            BoardModel.addToChat(boardid,msg, function(err, data){
+                if(err) throw err;
+                console.log(data);
+            });
+
             UserModel.getUserById(msg._id, function(err,data){
                 if(err) throw err;
                 var m = {};
