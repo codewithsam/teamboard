@@ -9041,10 +9041,10 @@ module.exports.initialize = function (c) {
     canvas = c;
 
     canvas.on('set:scale', function (o) {
-        // if (o.width) o.width = o.width * 1 / canvas.getZoom();
-        // if (o.height) o.height = o.height * 1 / canvas.getZoom();
-        // if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
-        // if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
+        if (o.width) o.width = o.width * 1 / canvas.getZoom();
+        if (o.height) o.height = o.height * 1 / canvas.getZoom();
+        if (o.fontSize) o.fontSize = o.fontSize * 1 / canvas.getZoom();
+        if (o.radius) o.radius = o.radius * 1 / canvas.getZoom();
 
         console.log("Fired event 'set:scale', setting scale");
     });
@@ -9251,6 +9251,11 @@ module.exports = function () {
 
     canvas.on('object:added', function (e) {
         var fabricObject = e.target;
+        if(fabricObject.type === 'path'){
+            if(fabricObject._id === null || fabricObject._id === undefined){
+                fabricObject._id = util.guid();
+            }
+        }
         if (fabricObject.remote === true) {
             fabricObject.remote = false;
             sessionStorage.setItem(fabricObject._id, JSON.stringify(fabricObject));
@@ -9337,13 +9342,17 @@ module.exports = function () {
         var propToInsert = [];
     });
     canvas.on('chat:send', function (e) {
-        if(!e.img){ e.img = 'Letter-A-icon.png'; }
+        if (!e.img) {
+            e.img = 'Letter-A-icon.png';
+        }
         var template = '<li class="chat-right"><img src="/img/alphabet/' + e.img + '" alt=""><div><span>' + e.name + '</span><p>' + e.msg + '</p></div></li>';
         $('ul.messages').append(template);
         socket.emit('chat:send', e);
     });
     socket.on('chat:send', function (msg) {
-        if(!msg.img){ msg.img = 'Letter-A-icon.png'; }        
+        if (!msg.img) {
+            msg.img = 'Letter-A-icon.png';
+        }
         var template = '<li class="chat-left"><img src="/img/alphabet/' + msg.img + '" alt=""><div><span>' + msg.name + '</span><p>' + msg.msg + '</p></div></li>';
         $('ul.messages').append(template);
     });
@@ -9358,9 +9367,12 @@ function resetPropertyDialog(e) {
     valuelist.html('');
     var textToInsert = [];
     var propToInsert = [];
-    if (e.target.get('fill').length === 6) {
-        e.target.set('fill', e.target.get('fill') + "0");
+    if (e.target.get('fill') !== null) {
+        if (e.target.get('fill').length === 6) {
+            e.target.set('fill', e.target.get('fill') + "0");
+        }
     }
+
     var selectedObject = e.target.toObject();
     for (var prop in selectedObject) {
         // console.log(prop,selectedObject[prop]);
@@ -9476,51 +9488,6 @@ function onPathMoving(e, canvas) {
     newCurve.hasControls = false;
     canvas.add(newCurve);
     canvas.renderAll();
-
-    // var p = e.target;
-    // if (p.name == "p0" || p.name == "p2") {
-    //     if (p.line1) {
-    //         p.line1.path[0][1] = p.left;
-    //         p.line1.path[0][2] = p.top;
-    //     } else if (p.line3) {
-    //         p.line3.path[1][3] = p.left;
-    //         p.line3.path[1][4] = p.top;
-    //     }
-    // } else if (p.name == "p1") {
-    //     if (p.line2) {
-    //         p.line2.path[1][1] = p.left;
-    //         p.line2.path[1][2] = p.top;
-    //     }
-    // } else if (p.name == "p0" || p.name == "p2") {
-    //     p.line1 && p.line1.set({
-    //         'x2': p.left,
-    //         'y2': p.top
-    //     });
-    //     p.line2 && p.line2.set({
-    //         'x1': p.left,
-    //         'y1': p.top
-    //     });
-    //     p.line3 && p.line3.set({
-    //         'x1': p.left,
-    //         'y1': p.top
-    //     });
-    //     p.line4 && p.line4.set({
-    //         'x1': p.left,
-    //         'y1': p.top
-    //     });
-    // }
-    // var options = p.toObject();
-    // canvas.remove(p);
-
-    // var line = new fabric.Path(p.path, options);
-    // canvas.add(line);
-
-
-
-
-
-
-
 }
 
 /***/ }),
@@ -9597,6 +9564,7 @@ function onPathMoving(e, canvas) {
        var proplist = $('.property-list ul');
        var valuelist = $('.value-list ul');
        var chatsend = $('.chat-send');
+       var pencilobject = $('.pencil-object');
        /**
         * Required to reset all unused events
         */
@@ -9610,8 +9578,35 @@ function onPathMoving(e, canvas) {
        ui_expand.addClass('li-disabled');
        ui_comment.addClass('li-disabled');
 
+/**
+ * Check which li is clicked
+ * If pencil tool is clicked then change the canvas drawing mode to true
+ * If any other Li is clicked except pencil tool then change the canvas drawing mode to false
+ */
+
+$('.leftbar-command-pallete').on('click', '>li', function(evt){
+    if(evt.currentTarget.classList.contains('command-pencil-tool') === true){
+        canvas.isDrawingMode = true;
+    }else{
+        canvas.isDrawingMode = false;
+    }
+});
 
 
+pencilobject.on('click', function(evt){
+    if(canvas.isDrawingMode){
+        canvas.freeDrawingBrush.width = 3;
+        canvas.freeDrawingBrush.color = "#000000";
+    }
+});
+
+$('.color-box-set').on('click', function(evt){
+    canvas.freeDrawingBrush.color = $(this).data('color');
+});
+
+$('.range-slider__range').on('change', function(evt){
+    canvas.freeDrawingBrush.width = parseInt($(this).val());
+});
 
        /**
         * Below are all the events for UI

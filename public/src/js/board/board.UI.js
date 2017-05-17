@@ -68,6 +68,7 @@
        var proplist = $('.property-list ul');
        var valuelist = $('.value-list ul');
        var chatsend = $('.chat-send');
+       var pencilobject = $('.pencil-object');
        /**
         * Required to reset all unused events
         */
@@ -81,8 +82,35 @@
        ui_expand.addClass('li-disabled');
        ui_comment.addClass('li-disabled');
 
+/**
+ * Check which li is clicked
+ * If pencil tool is clicked then change the canvas drawing mode to true
+ * If any other Li is clicked except pencil tool then change the canvas drawing mode to false
+ */
+
+$('.leftbar-command-pallete').on('click', '>li', function(evt){
+    if(evt.currentTarget.classList.contains('command-pencil-tool') === true){
+        canvas.isDrawingMode = true;
+    }else{
+        canvas.isDrawingMode = false;
+    }
+});
 
 
+pencilobject.on('click', function(evt){
+    if(canvas.isDrawingMode){
+        canvas.freeDrawingBrush.width = 3;
+        canvas.freeDrawingBrush.color = "#000000";
+    }
+});
+
+$('.color-box-set').on('click', function(evt){
+    canvas.freeDrawingBrush.color = $(this).data('color');
+});
+
+$('.range-slider__range').on('change', function(evt){
+    canvas.freeDrawingBrush.width = parseInt($(this).val());
+});
 
        /**
         * Below are all the events for UI
