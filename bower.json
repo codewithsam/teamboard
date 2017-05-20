@@ -1,0 +1,25 @@
+{
+  "name": "teamboard",
+  "description": "The simplest visual collaboration platform for agile product teams, ux/ui designers, project leaders, marketers and creatives.",
+  "main": "app.js",
+  "authors": [
+    "samvscode@gmail.com"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/SamVsCode/teamboard",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/dist/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "components-font-awesome": "^4.7.0",
+    "fabric.js": "fabric#^1.7.9",
+    "split-pane": "^0.9.4"
+  }
+}
