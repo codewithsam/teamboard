@@ -184,9 +184,17 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                console.log(response);
+                alertify.logPosition("top right");
+                alertify.success(response);
+                $('#shareModal').modal('hide');
             },
-            error: function (xhr, status, error) {}
+            error: function (xhr, status, error) {
+                alertify.logPosition("top right");
+                alertify.success(error);
+                alertify.success(status);      
+                $('#shareModal').modal('hide');
+                          
+            }
         });
     });
 });
@@ -245,13 +253,6 @@ $(document).ready(function () {
     }());
 
 
-    $('div.split-pane').splitPane();
-    // $('#left-component').on('scroll', function () {
-    //     $('#right-component').scrollTop($('#left-component').scrollTop());
-    // });
-    // $('#right-component').on('scroll', function () {
-    //     $('#left-component').scrollTop($('#right-component').scrollTop());
-    // });
 
 
     $('.capture-icons').on('click', function (evt) {
@@ -288,7 +289,7 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (res) {
-                var str = '<div class="col-md-3 col-sm-4 col-xs-6"> <div class="thumbnail"> <img src="/img/board-ava.svg" alt="..."> <div class="caption"> <h3>' + res.title + '</h3> <p>' + res.description + '</p> <p> <a href="#" class="btn btn-primary" role="button">Open</a> <a href="#" class="btn btn-success" role="button">Share</a> <a href="#" class="btn btn-default" role="button">Delete</a> </p> </div> </div> </div>';
+                var str = '<div class="col-md-3 col-sm-4 col-xs-6"> <div class="thumbnail"> <img src="/img/board-ava.svg" alt="..."> <div class="caption"> <h3>' + res.title + '</h3> <p>' + res.description + '</p> <p> <a href="/board/'+res._id+'" class="btn btn-primary" role="button">Open</a> <a href="#" class="btn btn-success" role="button">Share</a> <a href="#" class="btn btn-default" role="button">Delete</a> </p> </div> </div> </div>';
                 $('.board-list').append(str);
                 console.log(res);
             },

@@ -647,6 +647,9 @@ $('.range-slider__range').on('change', function(evt){
      canvas.trigger('chat:send', {_id: uid, msg: msg, name:name});
  });
 
+     $('div.split-pane').splitPane();
+
+
 
 
 

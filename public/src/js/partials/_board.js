@@ -61,9 +61,17 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                console.log(response);
+                alertify.logPosition("top right");
+                alertify.success(response);
+                $('#shareModal').modal('hide');
             },
-            error: function (xhr, status, error) {}
+            error: function (xhr, status, error) {
+                alertify.logPosition("top right");
+                alertify.success(error);
+                alertify.success(status);      
+                $('#shareModal').modal('hide');
+                          
+            }
         });
     });
 });
@@ -122,13 +130,6 @@ $(document).ready(function () {
     }());
 
 
-    $('div.split-pane').splitPane();
-    // $('#left-component').on('scroll', function () {
-    //     $('#right-component').scrollTop($('#left-component').scrollTop());
-    // });
-    // $('#right-component').on('scroll', function () {
-    //     $('#left-component').scrollTop($('#right-component').scrollTop());
-    // });
 
 
     $('.capture-icons').on('click', function (evt) {

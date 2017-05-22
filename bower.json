@@ -20,6 +20,7 @@
     "bootstrap": "^3.3.7",
     "components-font-awesome": "^4.7.0",
     "fabric.js": "fabric#^1.7.9",
-    "split-pane": "^0.9.4"
+    "split-pane": "^0.9.4",
+    "alertifyjs": "^1.0.11"
   }
 }

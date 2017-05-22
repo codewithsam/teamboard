@@ -86,17 +86,17 @@ boardRouter.post('/:id', middlewares.isAuthenticatedUser, function (req, res) {
 });
 
 boardRouter.post('/:id/addteams', middlewares.isAuthenticatedUser, function (req, res) {
-    var count = req.body.teams.length;
+    var count = 0;
     req.body.teams.forEach(function (team) {
         User.getUserByEmail(team, function (err, result) {
             if (err) throw err;
             BoardSchema.addNewTeamMemberByUserId(req.params.id, result._id, function (err, result) {
                 if (err) throw err;
                 console.log(result);
-                if (count === req.body.teams.length) {
-                    return res.send('done');
-                }
                 count++;
+                if (count === req.body.teams.length) {
+                    return res.json('member has been addded to team');
+                }
             });
         });
     });
