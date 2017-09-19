@@ -1,7 +1,7 @@
 module.exports.isAuth = function (req, res, next) {
-    if(req.app.get('env') === "development"){
-        return next();
-    }
+    // if(req.app.get('env') === "development"){
+    //     return next();
+    // }
     if (req.isAuthenticated()) {
         return next();
     } else {

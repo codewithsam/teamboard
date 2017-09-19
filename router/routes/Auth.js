@@ -81,21 +81,21 @@ passport.deserializeUser(function (id, done) {
 
 
 authRouter.get('/login', function (req, res) {
-    if(req.app.get("env") === "development"){
-        User.getUserByEmail('sam@gmail.com', function(err,user){
-            if(err) throw err;
-            req.logIn(user, function(err){
-                if(err) throw err;
-                return res.redirect('/');                
-            });
-            return;
-        });
-    }
-    else{
+    // if(req.app.get("env") === "development"){
+    //     User.getUserByEmail('sam@gmail.com', function(err,user){
+    //         if(err) throw err;
+    //         req.logIn(user, function(err){
+    //             if(err) throw err;
+    //             return res.redirect('/');                
+    //         });
+    //         return;
+    //     });
+    // }
+    // else{
         res.render('login', {
             
         });
-    }
+    // }
 });
 authRouter.get('/signup', function (req, res) {
     res.render('signup', {
@@ -105,11 +105,11 @@ authRouter.get('/signup', function (req, res) {
 
 
 authRouter.post('/login', passport.authenticate('local', {
-    successRedirect: '/board',
+    successRedirect: '/',
     failureRedirect: '/auth/login',
     failureFlash: true
 }), function (req, res) {
-    res.redirect('/board');
+    res.redirect('/');
 });
 
 authRouter.post('/signup', function (req, res) {
