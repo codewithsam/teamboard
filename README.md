@@ -23,5 +23,5 @@ every connected members in real time. Users can also chat with other members pri
 
 ###Requirements
 
-* All you need is mongodb and NodeJS and webpack installed
+* All you need is mongodb and NodeJS, NPM and webpack installed
 
