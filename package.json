@@ -9,7 +9,8 @@
     "watch:sass": "npm run build:css &&  node-sass --output-style compressed public/src/scss/app.scss public/dist/css/app.bundle.css -w",
     "nodemon": " nodemon --ignore 'public/**/*.*'",
     "start": "npm run watch:sass",
-    "dev": "concurrently --kill-others \" npm run watch:sass\"  \" npm run webpack\" \" npm run nodemon\" "
+    "dev": "concurrently --kill-others \" npm run watch:sass\"  \" npm run webpack\" \" npm run nodemon\" ",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
