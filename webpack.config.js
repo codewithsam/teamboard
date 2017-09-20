@@ -18,7 +18,7 @@ module.exports = {
       port: 3000,
       ghostMode: false,
       files: ["views/**/*.hbs", "public/**/*.*", "!public/src/scss", "!public/src/js"],
-      proxy: "localhost:5000",
+      proxy: "localhost:80",
     })
   ]
 };

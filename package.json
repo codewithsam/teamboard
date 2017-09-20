@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SamVsCode/teamboard.git"
+    "url": "git+https://github.com/codewithsam/teamboard.git"
   },
-  "author": "samvscode@gmail.com",
+  "author": "codewithsam@gmail.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SamVsCode/teamboard/issues"
+    "url": "https://github.com/codewithsam/teamboard/issues"
   },
-  "homepage": "https://github.com/SamVsCode/teamboard#readme",
+  "homepage": "https://github.com/codewithsam/teamboard#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
