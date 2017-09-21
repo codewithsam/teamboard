@@ -29,6 +29,10 @@ every connected members in real time. Users can also chat with other members pri
 * Using concurrent to run various node scripts together.
 * Bower is used from getting frontend dependencies.
 
+# DEMO
+
+This app is on heroku -> [https://visualboard.herokuapp.com](https://visualboard.herokuapp.com "App Demo")
+
 ## Features
 
 #### Uploading
