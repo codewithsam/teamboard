@@ -28,6 +28,6 @@ require('./router/router-list')(app);
 require('./modules/sockets/socket')(io);
 
 //Start server
-server.listen(app.get('port'), function () {
-    console.log("Running server on port 80");
+server.listen(process.env.PORT || 80, function () {
+    console.log("Running server on port"+ (process.env.PORT || " 80.") );
 });
