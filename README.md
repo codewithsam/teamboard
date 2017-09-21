@@ -14,14 +14,14 @@ every connected members in real time. Users can also chat with other members pri
 
 ## How To Run
 
-* Clone the repo
-* Open terminal and type `npm install`
-* Type `bower install`
-* After that type `npm run dev`
+* Open terminal and clone the repo by `git clone`
+* Type the command `npm set strict-ssl false` this is required to download phantomjs even behind proxy
+* Type `npm install` this will install both npm packages and bower packages
+* After that type `node app.js` (port is listening on 80, so you might need permissions Type `sudo node app.js` )
 
-> If something is left create an issue ticket. I will add in instructions
+> Remember change port to whatever you life, change mongodb connection string to your mongoDB connection string in app.js on `line 6`
 
-## Project Setup
+## Project Configurations
 
 * Webpack is used from various preprocessing like sass to cass, minification, combining all JS into one file.
 * All frontend part is written in public/src which then compiles down to public/dist.
