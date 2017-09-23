@@ -13,7 +13,7 @@ var io = require('socket.io')(server);
 app.use(express.static(__dirname + '/public'));
 
 //Set Port Number
-app.set('port', (process.env.PORT || 80));
+app.set('port', (process.env.PORT || 5000));
 
 // Middleware Configurations
 require('./Configurations/Middlewares')(app,io);
@@ -28,6 +28,6 @@ require('./router/router-list')(app);
 require('./modules/sockets/socket')(io);
 
 //Start server
-server.listen(process.env.PORT || 80, function () {
-    console.log("Running server on port"+ (process.env.PORT || " 80.") );
+server.listen(process.env.PORT || 5000, function () {
+    console.log("Running server on port "+ (process.env.PORT || "5000.") );
 });

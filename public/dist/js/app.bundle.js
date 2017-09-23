@@ -4016,10 +4016,17 @@ var socket = __webpack_require__(52);
 var instance;
 var host = configs.host;
 var port = configs.port;
+var connectionString = "";
+
+if (configs.port){
+	connectionString = host + ":"+port;
+}else{
+	connectionString = host;
+}
 
 var createSocket = function () {
     console.log("Created new socket object. (socket is singleton)");
-    return socket(host + ":" + port);
+    return socket(connectionString);
     
 }
 
@@ -10227,8 +10234,7 @@ module.exports = Board;
 /***/ (function(module, exports) {
 
 module.exports = {
-    host: "localhost",
-    port: 5000
+    host: "visualboard.herokuapp.com"
 }
 
 /***/ }),
