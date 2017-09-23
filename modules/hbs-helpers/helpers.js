@@ -3,7 +3,8 @@ exports.charAtIndex = function (str, index) {
     return s[index].toUpperCase();
 }
 exports.currentBoardData = function(object,property){
-	var o = JSON.parse(object);
+	console.log(object);
+	var o = JSON.parse(JSON.stringify(object));
 	return o[property];
 }
 exports.getUser = function(user){
