@@ -1,3 +1,3 @@
 module.exports = {
-    host: "visualboard.herokuapp.com"
+    host: "localhost:5000"
 }
