@@ -3,7 +3,7 @@ const app = express();
 // process.env.NODE_ENV = 'production';
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://root:root@smoot-shard-00-00.7hrwn.mongodb.net:27017,smoot-shard-00-01.7hrwn.mongodb.net:27017,smoot-shard-00-02.7hrwn.mongodb.net:27017/teamboard?ssl=true&replicaSet=Smoot-shard-0&authSource=admin&retryWrites=true&w=majority');
+mongoose.connect('your-mongo-url');
 // mongoose.connect('mongodb://localhost/teamboard');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);

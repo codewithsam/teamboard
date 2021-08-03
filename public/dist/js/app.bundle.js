@@ -10234,7 +10234,7 @@ module.exports = Board;
 /***/ (function(module, exports) {
 
 module.exports = {
-    host: "visualboard.herokuapp.com"
+    host: "localhost:5000"
 }
 
 /***/ }),

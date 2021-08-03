@@ -37,6 +37,7 @@ boardRouter.get('/:id', middlewares.isAuth, function (req, res) {
     if (req.app.get('env') === 'development') {
         if (req.isAuthenticated()) {
             BoardSchema.getByIdAndPopulate(req.params.id, ['team',['data']], function (err, response) {
+                console.log(response);
                 if (err) throw err;
                 return res.render('board', {
                     boardid: req.params.id,
@@ -69,6 +70,7 @@ boardRouter.get('/:id', middlewares.isAuth, function (req, res) {
 
 boardRouter.post('/:id', middlewares.isAuthenticatedUser, function (req, res) {
     User.getUserByEmail(req.body.email, function (err, result) {
+        console.log(result);
         if (err) throw err;
         var flag = false;
         for (let i = 0; i < result.boards.length; i++) {
@@ -87,6 +89,7 @@ boardRouter.post('/:id', middlewares.isAuthenticatedUser, function (req, res) {
 
 boardRouter.post('/:id/addteams', middlewares.isAuthenticatedUser, function (req, res) {
     var count = 0;
+    console.log("asdssss", req.body);
     req.body.teams.forEach(function (team) {
         User.getUserByEmail(team, function (err, result) {
             if (err) throw err;
